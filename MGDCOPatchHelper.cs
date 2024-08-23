@@ -96,7 +96,7 @@ namespace MoreGasDisplayConsoleOptions
 			{(int)PatchGasDisplayMode.Pressure,            ("PRESSURE",            "Pa",  "Mode: <b>Pressure</b>",             null, PatchDataType.Pressure, false)},
 			{(int)PatchGasDisplayMode.Temperature,         ("TEMPERATURE",         "°C",  "Mode: <b>Temperature (°C)</b>",     null, PatchDataType.Temperature, false)},
 			{(int)PatchGasDisplayMode.TemperatureKelvin,   ("TEMPERATURE",         "K",   "Mode: <b>Temperature (K)</b>",      null, PatchDataType.Temperature, false)},
-			{(int)PatchGasDisplayMode.TotalMoles,          ("TOTAL MOL",           "mol", "Mode: <b>Total (mol)</b>",          null, PatchDataType.Quantity, true)},
+			{(int)PatchGasDisplayMode.TotalMoles,          ("TOTAL MOLES",         "mol", "Mode: <b>Total (mol)</b>",          null, PatchDataType.Quantity, true)},
 			{(int)PatchGasDisplayMode.TotalGaseousMoles,   ("TOTAL GASEOUS",       "mol", "Mode: <b>Total Gas (mol)</b>",      null, PatchDataType.Quantity, false)},
 			{(int)PatchGasDisplayMode.TotalLiquidMoles,    ("TOTAL LIQUID",        "mol", "Mode: <b>Total Liquid (mol)</b>",   Chemistry.GasType.Undefined, PatchDataType.Quantity, false)},
 			{(int)PatchGasDisplayMode.TotalLiquidVolume,   ("TOTAL LIQUID",        "L",   "Mode: <b>Total Liquid (L)</b>",     null, PatchDataType.Volume, false)},

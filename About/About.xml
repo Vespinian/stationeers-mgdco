@@ -11,7 +11,7 @@
 
     [b]WARNING:[/b] This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.
 
-    This mod adds a bunch of modes to the gas display consoles which convert pretty much everything the atmospheric analyzer from the tablet gives you.
+    This mod adds a bunch of modes to the gas display consoles which coverts pretty much everything the atmospheric analyzer from the tablet gives you.
     There's 62 modes in total so have fun clicking!
 
     Source: https://github.com/Vespinian/stationeers-mgdco
@@ -20,8 +20,8 @@
     [list]
     [*] Temperatures are averaged
     [*] Pressures are averaged
-    [*] Ratios are calculated by summing the total amount of mols of the selected gas in every selected device and dividing it by the sum of the total amount of mols in every selected device.
-    [*] Mol count is additive.
+    [*] Ratios are calculated by summing the total amount of moles of the selected gas in every selected device and dividing it by the sum of the total amount of moles in every selected device.
+    [*] Mole count is additive.
     [*] Liquid volume is additive.
     [*] Energy values are additive.
     [/list]
@@ -29,26 +29,26 @@
     List of modes:
     General Modes:
     [list]
-    [*]Pressure
-    [*]Temperature Celcius
-    [*]Temperature Kelvin
-    [*]Total mol count
-    [*]Total gaseous mol count
-    [*]Total liquid mol count
-    [*]Total liquid volume
-    [*]Convected energy
-    [*]Radation energy
-    [*]Latent energy
+    [*] Pressure
+    [*] Temperature Celcius
+    [*] Temperature Kelvin
+    [*] Total moles
+    [*] Total gaseous moles
+    [*] Total liquid moles
+    [*] Total liquid volume
+    [*] Convected energy
+    [*] Radation energy
+    [*] Latent energy
     [/list]
     For every gas:
     [list]
-    [*]Total mol
-    [*]Mol ratio
-    [*]Gaseous mols
-    [*]Gaseous mol ratio
-    [*]Liquid mols
-    [*]Liquid mol ratio
-    [*]Liquid volume
+    [*] Total moles
+    [*] Mole ratio
+    [*] Gaseous moles
+    [*] Gaseous mole ratio
+    [*] Liquid moles
+    [*] Liquid mole ratio
+    [*] Liquid volume
     [/list]
 
   </Description>
@@ -58,7 +58,7 @@
 <b>WARNING:</b> <color=#ff0000>This is a StationeersMods Plugin Mod. It requires Bepinex to be installed with the StationeersMods plugin.</color>
 See: https://github.com/jixxed/StationeersMods
 
-This mod adds a bunch of modes to the gas display consoles which convert pretty much everything the atmospheric analyzer from the tablet gives you.
+This mod adds a bunch of modes to the gas display consoles which coverts pretty much everything the atmospheric analyzer from the tablet gives you.
 There's 62 modes in total so have fun clicking!
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
@@ -68,7 +68,7 @@ Source: https://github.com/Vespinian/stationeers-mgdco
 Exepected Behavior:
     * Temperatures are averaged
     * Pressures are averaged
-    * Ratios are calculated by summing the total amount of mols of the selected gas in every selected device and dividing it by the sum of the total amount of mols in every selected device.
+    * Ratios are calculated by summing the total amount of moles of the selected gas in every selected device and dividing it by the sum of the total amount of moles in every selected device.
     * Mol count is additive.
     * Liquid volume is additive.
     * Energy values are additive.
@@ -78,20 +78,20 @@ List of modes:
     * Pressure
     * Temperature Celcius
     * Temperature Kelvin
-    * Total mol count
-    * Total gaseous mol count
-    * Total liquid mol count
+    * Total moles
+    * Total gaseous moles
+    * Total liquid moles
     * Total liquid volume
     * Convected energy
     * Radation energy
     * Latent energy
   For every gas/liquid combo (including polluted water):
-    * Total mol
-    * Mol ratio 
-    * Gaseous mols
-    * Gaseous mol ratio
-    * Liquid mols
-    * Liquid mol ratio
+    * Total moles
+    * Mole ratio 
+    * Gaseous moles
+    * Gaseous mole ratio
+    * Liquid moles
+    * Liquid mole ratio
     * Liquid volume
 ]]>
   </InGameDescription>
