@@ -111,7 +111,7 @@ namespace MoreGasDisplayConsoleOptions
 										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasSensor.WorldAtmosphere, gasSensor);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, false);
+										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
 										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Quantity:
@@ -142,7 +142,7 @@ namespace MoreGasDisplayConsoleOptions
 										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, pipeAnalysizer.NetworkAtmosphere, pipeAnalysizer);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, pipeAnalysizer.NetworkAtmosphere, false);
+										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, pipeAnalysizer.NetworkAtmosphere, true);
 										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, pipeAnalysizer.NetworkAtmosphere, combinedQuantity);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Quantity:
@@ -173,7 +173,7 @@ namespace MoreGasDisplayConsoleOptions
 										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasTankStorage.InternalAtmosphere, gasTankStorage);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasTankStorage.InternalAtmosphere, false);
+										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasTankStorage.InternalAtmosphere, true);
 										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasTankStorage.InternalAtmosphere, combinedQuantity);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Quantity:
@@ -204,7 +204,7 @@ namespace MoreGasDisplayConsoleOptions
 										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, structure.InternalAtmosphere, structure);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, structure.InternalAtmosphere, false);
+										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, structure.InternalAtmosphere, true);
 										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, structure.InternalAtmosphere, combinedQuantity);
 										break;
 									case MGDCOPatchHelper.PatchDataType.Quantity:
