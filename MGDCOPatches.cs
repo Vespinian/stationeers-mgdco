@@ -10,6 +10,10 @@ using Assets.Scripts;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Assets.Scripts.Atmospherics;
+using System.Data;
+using System.Linq;
+using InputSystem;
+
 
 namespace MoreGasDisplayConsoleOptions
 {
@@ -19,13 +23,68 @@ namespace MoreGasDisplayConsoleOptions
 	{
 		static bool Prefix(GasDisplay __instance)
 		{
-			__instance.Flag++;
+			KeyCode quantityModifier = KeyMap.QuantityModifier;
+			if (KeyManager.GetButton(quantityModifier))
+			{ 
+				__instance.Flag--;
+			}
+			else 
+			{
+				__instance.Flag++;
+			}
+
 			if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
 			{
 				__instance.Flag = 0;
 			}
+			else if (__instance.Flag < 0)
+			{
+				__instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - 1;
+			}
 			Motherboard.UseComputer(3, __instance.ReferenceId, __instance.ReferenceId, __instance.Flag, true, "");
 			return false;
+		}
+	}
+
+	[HarmonyPatch(typeof(Circuitboard))]
+	[HarmonyPatch("InputFinished")]
+	public class UpdateFilterButtonPatch
+	{
+		static bool Prefix(string value, string value2, Circuitboard __instance)
+		{
+			if (__instance is GasDisplay && !string.IsNullOrEmpty(value) && value[0] == '/')
+			{
+				string tag = value.Substring(1);
+				int index = 0;
+				if (int.TryParse(tag, out index))
+				{
+					if (index >= 0 && index < (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
+						__instance.SetFlag(index);
+					return false;
+				}
+				else {
+					tag = tag.ToUpper();
+					// query tags
+					var queryTag = MGDCOPatchHelper.GasData.Where(p => p.Value.tag.Contains(tag))
+															.Select(e => (KeyValuePair<int, (string, string, string, string, Chemistry.GasType?, MGDCOPatchHelper.PatchDataType, bool)>?)e)
+															.FirstOrDefault();
+					if (queryTag.HasValue)
+					{
+						__instance.SetFlag(queryTag.Value.Key);
+						return false;
+					}
+
+					// query display names instead
+					var queryDisplayNames = MGDCOPatchHelper.GasData.Where(p => p.Value.displayName.Contains(tag))
+															.Select(e => (KeyValuePair<int, (string, string, string, string, Chemistry.GasType?, MGDCOPatchHelper.PatchDataType, bool)>?) e)
+															.FirstOrDefault();
+					if (queryDisplayNames.HasValue) { 
+						__instance.SetFlag(queryDisplayNames.Value.Key);
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 	}
 
