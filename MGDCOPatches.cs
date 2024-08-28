@@ -52,9 +52,11 @@ namespace MoreGasDisplayConsoleOptions
 	{
 		static bool Prefix(string value, string value2, Circuitboard __instance)
 		{
-			if (__instance is GasDisplay && !string.IsNullOrEmpty(value) && value[0] == '/')
+			//if (__instance is GasDisplay && !string.IsNullOrEmpty(value) && value[0] == '/') // if using "/" as mode filter
+			if (__instance is GasDisplay && !string.IsNullOrEmpty(value) && KeyManager.GetButton(KeyCode.LeftAlt))
 			{
-				string tag = value.Substring(1);
+				//string tag = value.Substring(1); // if using "/" as mode filter
+				string tag = value;
 				int index = 0;
 				if (int.TryParse(tag, out index))
 				{
@@ -83,6 +85,7 @@ namespace MoreGasDisplayConsoleOptions
 						return false;
 					}
 				}
+				return false;
 			}
 			return true;
 		}
