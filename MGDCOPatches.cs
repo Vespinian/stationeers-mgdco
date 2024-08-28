@@ -13,16 +13,56 @@ using Assets.Scripts.Atmospherics;
 
 namespace MoreGasDisplayConsoleOptions
 {
+	[HarmonyPatch(typeof(Motherboard))]
+	[HarmonyPatch("ButtonUp")]
+	public class ButtonUpPatch
+	{
+		static bool Prefix(Motherboard __instance)
+		{
+			if (__instance is GasDisplay)
+			{
+				__instance.ParentComputer.AsDevice().SetLogicValue(LogicType.Open, 0);
+			}
+			return true;
+		}
+	}
+
+	[HarmonyPatch(typeof(Motherboard))]
+	[HarmonyPatch("ButtonDown")]
+	public class ButtonDownPatch
+	{
+		static bool Prefix(Motherboard __instance)
+		{
+			if (__instance is GasDisplay)
+			{
+				__instance.ParentComputer.AsDevice().SetLogicValue(LogicType.Open, 1);
+			}
+			return true;
+		}
+	}
+
 	[HarmonyPatch(typeof(GasDisplay))]
 	[HarmonyPatch("ButtonToggleMode")]
 	public class ButtonTogglePatch
 	{
 		static bool Prefix(GasDisplay __instance)
 		{
-			__instance.Flag++;
-			if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
+			if (__instance.ParentComputer.AsDevice().GetLogicValue(LogicType.Open) == 1)
+			{
+				__instance.Flag--;
+			}
+			else
+			{
+				__instance.Flag++;
+			}
+
+			if (__instance.Flag >= (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
 			{
 				__instance.Flag = 0;
+			}
+			if (__instance.Flag < 0)
+			{
+				__instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - 1;
 			}
 			Motherboard.UseComputer(3, __instance.ReferenceId, __instance.ReferenceId, __instance.Flag, true, "");
 			return false;
