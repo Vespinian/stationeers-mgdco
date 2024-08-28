@@ -53,6 +53,24 @@
 
   </Description>
   <!-- Ingame Description using TMP tags for Workshop menu -->
+
+  <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
+  <ChangeLog>
+    [h3]Version 0.1.0000.00000.0:[/h3]
+    [list]
+    [*]Initial release
+    [/list]
+  </ChangeLog>
+  <WorkshopHandle>3315641641</WorkshopHandle>
+  <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
+  <Tags>
+    <Tag>StationeersMods</Tag>
+  </Tags>
+  <!-- Automatic downloads of dependencies -->
+  <Dependencies />
+  <!-- Automatic reordering of the mods list -->
+  <LoadBefore />
+  <LoadAfter />
   <InGameDescription>
     <![CDATA[<size="30"><color=#ffa500> MoreGasDisplayConsoleOptions </color></size>
 <b>WARNING:</b> <color=#ff0000>This is a StationeersMods Plugin Mod. It requires Bepinex to be installed with the StationeersMods plugin.</color>
@@ -95,20 +113,4 @@ List of modes:
     * Liquid volume
 ]]>
   </InGameDescription>
-  <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
-  <ChangeLog>
-    [h3]Version 0.1.0000.00000.0:[/h3]
-    [list]
-    [*]Initial release
-    [/list]
-  </ChangeLog>
-  <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
-  <Tags>
-    <Tag>StationeersMods</Tag>
-  </Tags>
-  <!-- Automatic downloads of dependencies -->
-  <Dependencies />
-  <!-- Automatic reordering of the mods list -->
-  <LoadBefore />
-  <LoadAfter />
 </ModMetadata>
