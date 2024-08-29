@@ -8,7 +8,7 @@ namespace MoreGasDisplayConsoleOptions
 	{
 		public enum PatchGasDisplayMode
 		{
-			Pressure = 0,
+			PrecisePressure = 0,
 			Temperature,
 			TemperatureKelvin,
 			EnergyConvected,
@@ -77,6 +77,8 @@ namespace MoreGasDisplayConsoleOptions
 			RatioPollutedH2O,
 			QuantityPollutedH2O,
 			VolumePollutedH2O,
+			// Vanilla behavior
+			Pressure,
 
 			TotalDisplays,
 		}
@@ -93,9 +95,10 @@ namespace MoreGasDisplayConsoleOptions
 		// DisplayTitle , DisplayUnits, ToggleModeButtonText, Gas type, Patch Type, Combine liquid and gas for ratio and quantity data types
 		public static readonly Dictionary<int, (string tag, string displayName, string unit, string displayModeButton, Chemistry.GasType? gasType, PatchDataType dataType, bool combined)> GasData
 			= new Dictionary<int, (string, string, string, string, Chemistry.GasType?, PatchDataType, bool)> {
-			{(int)PatchGasDisplayMode.Pressure,            ("P", "PRESSURE",            "Pa",  "Mode: <b>Pressure</b>",             null, PatchDataType.Pressure, false)},
-			{(int)PatchGasDisplayMode.Temperature,         ("TC", "TEMPERATURE",         "°C",  "Mode: <b>Temperature (°C)</b>",     null, PatchDataType.Temperature, false)},
-			{(int)PatchGasDisplayMode.TemperatureKelvin,   ("TK", "TEMPERATURE",         "K",   "Mode: <b>Temperature (K)</b>",      null, PatchDataType.Temperature, false)},
+			{(int)PatchGasDisplayMode.Pressure,            ("P", "PRESSURE",            "Pa",  "Mode: <b>Pressure</b>",     null, PatchDataType.Pressure, false)},
+			{(int)PatchGasDisplayMode.PrecisePressure,     ("PP", "PRESSURE",            "Pa",  "Mode: <b>Precise Pressure</b>",             null, PatchDataType.Pressure, false)},
+			{(int)PatchGasDisplayMode.Temperature,         ("TC", "TEMPERATURE",         "°C",  "Mode: <b>Temperature (°C)</b>",    null, PatchDataType.Temperature, false)},
+			{(int)PatchGasDisplayMode.TemperatureKelvin,   ("TK", "TEMPERATURE",         "K",   "Mode: <b>Temperature (K)</b>",     null, PatchDataType.Temperature, false)},
 			{(int)PatchGasDisplayMode.TotalMoles,          ("M", "TOTAL MOLES",         "mol", "Mode: <b>Total (mol)</b>",          null, PatchDataType.Quantity, true)},
 			{(int)PatchGasDisplayMode.TotalGaseousMoles,   ("GM", "TOTAL GASEOUS",       "mol", "Mode: <b>Total Gas (mol)</b>",      null, PatchDataType.Quantity, false)},
 			{(int)PatchGasDisplayMode.TotalLiquidMoles,    ("LM", "TOTAL LIQUID",        "mol", "Mode: <b>Total Liquid (mol)</b>",   Chemistry.GasType.Undefined, PatchDataType.Quantity, false)},
@@ -349,7 +352,7 @@ namespace MoreGasDisplayConsoleOptions
 			return energy;
 		}
 
-		public static (string, string) FormatSIUnits(float value, string unit)
+		public static string FormatSIUnits(float value, string unit)
 		{
 			string formatedNumber = "";
 			string formatedUnits = unit;
@@ -418,7 +421,7 @@ namespace MoreGasDisplayConsoleOptions
 				formatedNumber = string.Format("{0:0}", (object)value);
 			}
 
-			return (formatedNumber, formatedUnits);
+			return formatedNumber + "|" + formatedUnits;
 		}
 
 	}
