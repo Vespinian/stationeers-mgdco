@@ -52,53 +52,53 @@
     [*] "GO2P"   - Gaseous O2 Ratio
     [*] "GO2M"   - Gaseous O2 Moles
     [*] "LO2P"   - Liquid O2 Ratio
-    [*] "LO2V"   - Liquid O2 Volume
     [*] "LO2M"   - Liquid O2 Moles
+    [*] "LO2V"   - Liquid O2 Volume
     [*] "NP"     - N Ratio
     [*] "NM"     - N Moles
     [*] "NP"     - Gaseous N Ratio
-    [*] "GNM"    - Gaseous N Mole
+    [*] "GNM"    - Gaseous N Moles
     [*] "LNP"    - Liquid N Ratio
-    [*] "LNV"    - Liquid N Volum
     [*] "LNM"    - Liquid N Moles
+    [*] "LNV"    - Liquid N Volume
     [*] "CO2P"   - CO2 Ratio
     [*] "CO2M"   - CO2 Moles
     [*] "GCO2P"  - Gaseous CO2 Ratio
-    [*] "GCO2M"  - Gaseous CO2 Mole
+    [*] "GCO2M"  - Gaseous CO2 Moles
     [*] "LCO2P"  - Liquid CO2 Ratio
-    [*] "LCO2V"  - Liquid CO2 Volum
     [*] "LCO2M"  - Liquid CO2 Moles
+    [*] "LCO2V"  - Liquid CO2 Volume
     [*] "POLP"   - POL Ratio
     [*] "POLM"   - POL Moles
     [*] "GPOLP"  - Gaseous POL Ratio
-    [*] "GPOLM"  - Gaseous POL Mole
+    [*] "GPOLM"  - Gaseous POL Moles
     [*] "LPOLP"  - Liquid POL Ratio
-    [*] "LPOLV"  - Liquid POL Volum
     [*] "LPOLM"  - Liquid POL Moles
+    [*] "LPOLV"  - Liquid POL Volume
     [*] "VOLP"   - VOL Ratio
     [*] "VOLM"   - VOL Moles
     [*] "GVOLP"  - Gaseous VOL Ratio
-    [*] "GVOLM"  - Gaseous VOL Mole
+    [*] "GVOLM"  - Gaseous VOL Moles
     [*] "LVOLP"  - Liquid VOL Ratio
-    [*] "LVOLV"  - Liquid VOL Volum
     [*] "LVOLM"  - Liquid VOL Moles
+    [*] "LVOLV"  - Liquid VOL Volume
     [*] "N2OP"   - N2O Ratio
     [*] "N2OM"   - N2O Moles
     [*] "GN2OP"  - Gaseous N2O Ratio
-    [*] "GN2OM"  - Gaseous N2O Mole
+    [*] "GN2OM"  - Gaseous N2O Moles
     [*] "LN2OP"  - Liquid N2O Ratio
-    [*] "LN2OV"  - Liquid N2O Volum
     [*] "LN2OM"  - Liquid N2O Moles
+    [*] "LN2OV"  - Liquid N2O Volume
     [*] "H2OP "  - H2O Ratio
     [*] "H2OM "  - H2O Moles
     [*] "GH2OP"  - Steam H2O Ratio
-    [*] "GH2OM"  - Steam H2O Mole
+    [*] "GH2OM"  - Steam H2O Moles
     [*] "LH2OP"  - Water Ratio
-    [*] "LH2OV"  - Water Volum
     [*] "LH2OM"  - Water Moles
+    [*] "LH2OV"  - Water Volume
     [*] "LPH2OP" - Polluted Water Ratio
-    [*] "LPH2OV" - Polluted Water Volum
     [*] "LPH2OM" - Polluted Water Moles
+    [*] "LPH2OV" - Polluted Water Volume
     [*] "P"      - Vanilla Pressure
     [/olist]
 
