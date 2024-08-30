@@ -60,8 +60,8 @@ namespace MoreGasDisplayConsoleOptions
 				int index = 0;
 				if (int.TryParse(tag, out index))
 				{
-					if (index >= 0 && index < (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
-						__instance.SetFlag(index);
+					if (index >= 1 && index <= (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
+						__instance.SetFlag(index-1);
 					return false;
 				}
 				else {

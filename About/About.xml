@@ -13,10 +13,15 @@
 
     This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
     There's 63 modes in total so have fun clicking!
+
     You can use the quantity modifier to backtrack.
+
     You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
     To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
-    The filter first checks if you inputted a tag, if it gets no match it tries to match your input to one of the display titles.
+    The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
+    ex: inputting "LVOLP" will set the mode to "Liquid VOL Ratio".
+    ex: inputting "O2" will set the mode to "O2 Ratio".
+    ex: inputting "4" will set the mode to "Total Moles".
 
     Source: https://github.com/Vespinian/stationeers-mgdco
 
@@ -31,18 +36,17 @@
     [/list]
 
     List of tags and modes:
-    [list]
-    [*] "P"      - Vanilla Pressure
+    [olist]
     [*] "PP"     - Precise Pressure
     [*] "TC"     - Temperature Celcius
     [*] "TK"     - Temperature Kelvin
+    [*] "EC"     - Energy Convected
+    [*] "ER"     - Energy Radiated
+    [*] "EL"     - Energy Latent
     [*] "M",     - Total Moles
     [*] "GM"     - Gaseous Moles
     [*] "LM"     - Liquid Moles
     [*] "LV"     - Liquid Volume
-    [*] "EC"     - Energy Convected
-    [*] "ER"     - Energy Radiated
-    [*] "EL"     - Energy Latent
     [*] "O2P"    - O2 Ratio
     [*] "O2M"    - O2 Moles
     [*] "GO2P"   - Gaseous O2 Ratio
@@ -95,7 +99,8 @@
     [*] "LPH2OP" - Polluted Water Ratio
     [*] "LPH2OV" - Polluted Water Volum
     [*] "LPH2OM" - Polluted Water Moles
-    [/list]
+    [*] "P"      - Vanilla Pressure
+    [/olist]
 
   </Description>
   <!-- Ingame Description using TMP tags for Workshop menu -->
@@ -130,10 +135,14 @@ See: https://github.com/jixxed/StationeersMods
 
 This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
 There's 63 modes in total so have fun clicking!
+
 You can use the quantity modifier to backtrack.
+
 You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
 To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
-The filter first checks if you inputted a tag, if it gets no match it tries to match your input to one of the display titles.
+The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
+ex: inputting "LVOLP" will set the mode to "Liquid VOL Ratio".
+ex: inputting "O2" will set the mode to "O2 Ratio".
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
 
