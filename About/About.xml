@@ -23,6 +23,7 @@
     ex: inputting "O2" will set the mode to "O2 Ratio".
     ex: inputting "4" will set the mode to "Total Moles".
 
+
     Source: https://github.com/Vespinian/stationeers-mgdco
 
     Exepected Behavior:
@@ -37,7 +38,7 @@
 
     List of tags and modes:
     [olist]
-    [*] "PP"     - Precise Pressure
+    [*] "PP"     - Precise Pressure (gives you the pressure down to the last mPa before 0)
     [*] "TC"     - Temperature Celcius
     [*] "TK"     - Temperature Kelvin
     [*] "EC"     - Energy Convected
