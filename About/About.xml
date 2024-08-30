@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>MoreGasDisplayConsoleOptions [StationeersMods]</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00001.0</Version>
+  <Version>0.1.0000.00002.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]MoreGasDisplayConsoleOptions[/h1]
@@ -11,8 +11,17 @@
 
     [b]WARNING:[/b] This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.
 
-    This mod adds a bunch of modes to the gas display consoles which coverts pretty much everything the atmospheric analyzer from the tablet gives you.
-    There's 62 modes in total so have fun clicking!
+    This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
+    There's 63 modes in total so have fun clicking!
+
+    You can use the quantity modifier to backtrack.
+
+    You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
+    To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
+    The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
+    ex: inputting "LVOLP" will set the mode to "Liquid VOL Ratio".
+    ex: inputting "O2" will set the mode to "O2 Ratio".
+    ex: inputting "4" will set the mode to "Total Moles".
 
     Source: https://github.com/Vespinian/stationeers-mgdco
 
@@ -26,40 +35,114 @@
     [*] Energy values are additive.
     [/list]
 
-    List of modes:
-    General Modes:
-    [list]
-    [*] Pressure
-    [*] Temperature Celcius
-    [*] Temperature Kelvin
-    [*] Total moles
-    [*] Total gaseous moles
-    [*] Total liquid moles
-    [*] Total liquid volume
-    [*] Convected energy
-    [*] Radation energy
-    [*] Latent energy
-    [/list]
-    For every gas:
-    [list]
-    [*] Total moles
-    [*] Mole ratio
-    [*] Gaseous moles
-    [*] Gaseous mole ratio
-    [*] Liquid moles
-    [*] Liquid mole ratio
-    [*] Liquid volume
-    [/list]
+    List of tags and modes:
+    [olist]
+    [*] "PP"     - Precise Pressure
+    [*] "TC"     - Temperature Celcius
+    [*] "TK"     - Temperature Kelvin
+    [*] "EC"     - Energy Convected
+    [*] "ER"     - Energy Radiated
+    [*] "EL"     - Energy Latent
+    [*] "M",     - Total Moles
+    [*] "GM"     - Gaseous Moles
+    [*] "LM"     - Liquid Moles
+    [*] "LV"     - Liquid Volume
+    [*] "O2P"    - O2 Ratio
+    [*] "O2M"    - O2 Moles
+    [*] "GO2P"   - Gaseous O2 Ratio
+    [*] "GO2M"   - Gaseous O2 Moles
+    [*] "LO2P"   - Liquid O2 Ratio
+    [*] "LO2M"   - Liquid O2 Moles
+    [*] "LO2V"   - Liquid O2 Volume
+    [*] "NP"     - N Ratio
+    [*] "NM"     - N Moles
+    [*] "NP"     - Gaseous N Ratio
+    [*] "GNM"    - Gaseous N Moles
+    [*] "LNP"    - Liquid N Ratio
+    [*] "LNM"    - Liquid N Moles
+    [*] "LNV"    - Liquid N Volume
+    [*] "CO2P"   - CO2 Ratio
+    [*] "CO2M"   - CO2 Moles
+    [*] "GCO2P"  - Gaseous CO2 Ratio
+    [*] "GCO2M"  - Gaseous CO2 Moles
+    [*] "LCO2P"  - Liquid CO2 Ratio
+    [*] "LCO2M"  - Liquid CO2 Moles
+    [*] "LCO2V"  - Liquid CO2 Volume
+    [*] "POLP"   - POL Ratio
+    [*] "POLM"   - POL Moles
+    [*] "GPOLP"  - Gaseous POL Ratio
+    [*] "GPOLM"  - Gaseous POL Moles
+    [*] "LPOLP"  - Liquid POL Ratio
+    [*] "LPOLM"  - Liquid POL Moles
+    [*] "LPOLV"  - Liquid POL Volume
+    [*] "VOLP"   - VOL Ratio
+    [*] "VOLM"   - VOL Moles
+    [*] "GVOLP"  - Gaseous VOL Ratio
+    [*] "GVOLM"  - Gaseous VOL Moles
+    [*] "LVOLP"  - Liquid VOL Ratio
+    [*] "LVOLM"  - Liquid VOL Moles
+    [*] "LVOLV"  - Liquid VOL Volume
+    [*] "N2OP"   - N2O Ratio
+    [*] "N2OM"   - N2O Moles
+    [*] "GN2OP"  - Gaseous N2O Ratio
+    [*] "GN2OM"  - Gaseous N2O Moles
+    [*] "LN2OP"  - Liquid N2O Ratio
+    [*] "LN2OM"  - Liquid N2O Moles
+    [*] "LN2OV"  - Liquid N2O Volume
+    [*] "H2OP "  - H2O Ratio
+    [*] "H2OM "  - H2O Moles
+    [*] "GH2OP"  - Steam H2O Ratio
+    [*] "GH2OM"  - Steam H2O Moles
+    [*] "LH2OP"  - Water Ratio
+    [*] "LH2OM"  - Water Moles
+    [*] "LH2OV"  - Water Volume
+    [*] "LPH2OP" - Polluted Water Ratio
+    [*] "LPH2OM" - Polluted Water Moles
+    [*] "LPH2OV" - Polluted Water Volume
+    [*] "P"      - Vanilla Pressure
+    [/olist]
 
   </Description>
   <!-- Ingame Description using TMP tags for Workshop menu -->
+
+  <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
+  <ChangeLog>
+    [h3]Version 0.1.0000.00002.0:[/h3]
+    [list]
+    [*]Can now use the quantity modifier key to cycle through mods backwards
+    [*]Can now use the filter function to target certain modes when holding left alt when clicking the Confirm button in the filter input menu.
+    [*]Added back old pressure format function to as Pressure, my new formatting is now known as Prescise Pressure.
+    [/list]
+    [h3]Version 0.1.0000.00001.0:[/h3]
+    [list]
+    [*]Initial release
+    [/list]
+  </ChangeLog>
+  <WorkshopHandle>3315641641</WorkshopHandle>
+  <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
+  <Tags>
+    <Tag>StationeersMods</Tag>
+  </Tags>
+  <!-- Automatic downloads of dependencies -->
+  <Dependencies />
+  <!-- Automatic reordering of the mods list -->
+  <LoadBefore />
+  <LoadAfter />
   <InGameDescription>
     <![CDATA[<size="30"><color=#ffa500> MoreGasDisplayConsoleOptions </color></size>
 <b>WARNING:</b> <color=#ff0000>This is a StationeersMods Plugin Mod. It requires Bepinex to be installed with the StationeersMods plugin.</color>
 See: https://github.com/jixxed/StationeersMods
 
-This mod adds a bunch of modes to the gas display consoles which coverts pretty much everything the atmospheric analyzer from the tablet gives you.
-There's 62 modes in total so have fun clicking!
+This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
+There's 63 modes in total so have fun clicking!
+
+You can use the quantity modifier to backtrack.
+
+You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
+To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
+The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
+ex: inputting "LVOLP" will set the mode to "Liquid VOL Ratio".
+ex: inputting "O2" will set the mode to "O2 Ratio".
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
 
@@ -76,6 +159,7 @@ Exepected Behavior:
 List of modes:
   General Modes:
     * Pressure
+    * Precise Pressure
     * Temperature Celcius
     * Temperature Kelvin
     * Total moles
@@ -95,20 +179,4 @@ List of modes:
     * Liquid volume
 ]]>
   </InGameDescription>
-  <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
-  <ChangeLog>
-    [h3]Version 0.1.0000.00000.0:[/h3]
-    [list]
-    [*]Initial release
-    [/list]
-  </ChangeLog>
-  <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
-  <Tags>
-    <Tag>StationeersMods</Tag>
-  </Tags>
-  <!-- Automatic downloads of dependencies -->
-  <Dependencies />
-  <!-- Automatic reordering of the mods list -->
-  <LoadBefore />
-  <LoadAfter />
 </ModMetadata>
