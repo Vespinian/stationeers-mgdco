@@ -165,324 +165,326 @@ namespace MoreGasDisplayConsoleOptions
 			{
 				return false;
 			}
+			if (!(bool)shouldDraw.Invoke(__instance, null))
+			{
+				return false;
+			}
 			lock (linkedDevices)
 			{
-				if ((bool)shouldDraw.Invoke(__instance, null))
+				string displayUnits = MGDCOPatchHelper.getDisplayModeUnits(__instance.Flag);
+				if (linkedDevices.Count == 0)
 				{
-					string displayUnits = MGDCOPatchHelper.getDisplayModeUnits(__instance.Flag);
-					if (linkedDevices.Count == 0)
+					____displayText = "-";
+					if (__instance.Flag != (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure) 
 					{
-						____displayText = "-";
-						if (__instance.Flag != (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure) 
+						____displayText += ("|" + displayUnits);
+					}
+				}
+				else
+				{
+					GasDisplayMode displayMode = __instance.DisplayMode;
+					Chemistry.GasType? gasSelected = MGDCOPatchHelper.getGasDisplayModeGas(__instance.Flag);
+					bool combinedQuantity = MGDCOPatchHelper.getGasDisplayModeCombinedFlag(__instance.Flag);
+					____sensors = 0;
+					____temperature = 0f;
+					____pressure = 0f;
+					float ratio = 0f;
+					float quantity = 0f;
+					float volume = 0f;
+					float totalMoles = 0f;
+					float energy = 0f;
+					int gas_sensor_count = __instance.GasSensors.Count;
+					while (gas_sensor_count-- > 0)
+					{
+						GasSensor gasSensor = __instance.GasSensors[gas_sensor_count];
+						if (gasSensor && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasSensor))
 						{
-							____displayText += ("|" + displayUnits);
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
+								case MGDCOPatchHelper.PatchDataType.Pressure:
+									____pressure += gasSensor.AirPressure;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Temperature:
+									____temperature += gasSensor.AirTemperature;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Energy:
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasSensor.WorldAtmosphere, gasSensor);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Ratio:
+									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Quantity:
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Volume:
+									volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
+									break;
+							}
+							____sensors++;
 						}
 					}
-					else
+					int pipe_analyzer_count = __instance.PipeAnalysizers.Count;
+					while (pipe_analyzer_count-- > 0)
 					{
-						GasDisplayMode displayMode = __instance.DisplayMode;
-						Chemistry.GasType? gasSelected = MGDCOPatchHelper.getGasDisplayModeGas(__instance.Flag);
-						bool combinedQuantity = MGDCOPatchHelper.getGasDisplayModeCombinedFlag(__instance.Flag);
-						____sensors = 0;
-						____temperature = 0f;
-						____pressure = 0f;
-						float ratio = 0f;
-						float quantity = 0f;
-						float volume = 0f;
-						float totalMoles = 0f;
-						float energy = 0f;
-						int gas_sensor_count = __instance.GasSensors.Count;
-						while (gas_sensor_count-- > 0)
+						PipeAnalysizer pipeAnalysizer = __instance.PipeAnalysizers[pipe_analyzer_count];
+						if (pipeAnalysizer && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(pipeAnalysizer) && pipeAnalysizer.HasReadableAtmosphere)
 						{
-							GasSensor gasSensor = __instance.GasSensors[gas_sensor_count];
-							if (gasSensor && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasSensor))
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
 							{
-								switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
-									case MGDCOPatchHelper.PatchDataType.Pressure:
-										____pressure += gasSensor.AirPressure;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Temperature:
-										____temperature += gasSensor.AirTemperature;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Energy:
-										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasSensor.WorldAtmosphere, gasSensor);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Quantity:
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Volume:
-										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
-										break;
-								}
-								____sensors++;
+								case MGDCOPatchHelper.PatchDataType.Pressure:
+									____pressure += pipeAnalysizer.PipePressure;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Temperature:
+									____temperature += pipeAnalysizer.PipeTemperature;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Energy:
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, pipeAnalysizer.NetworkAtmosphere, pipeAnalysizer);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Ratio:
+									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, pipeAnalysizer.NetworkAtmosphere, true);
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, pipeAnalysizer.NetworkAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Quantity:
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, pipeAnalysizer.NetworkAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Volume:
+									volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, pipeAnalysizer.NetworkAtmosphere);
+									break;
 							}
+							____sensors++;
 						}
-						int pipe_analyzer_count = __instance.PipeAnalysizers.Count;
-						while (pipe_analyzer_count-- > 0)
+					}
+					int gas_tank_storage_count = __instance.GasTankStorages.Count;
+					while (gas_tank_storage_count-- > 0)
+					{
+						GasTankStorage gasTankStorage = __instance.GasTankStorages[gas_tank_storage_count];
+						if (gasTankStorage && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasTankStorage) && gasTankStorage.HasReadableAtmosphere)
 						{
-							PipeAnalysizer pipeAnalysizer = __instance.PipeAnalysizers[pipe_analyzer_count];
-							if (pipeAnalysizer && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(pipeAnalysizer) && pipeAnalysizer.HasReadableAtmosphere)
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
 							{
-								switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
-								{
-									case MGDCOPatchHelper.PatchDataType.Pressure:
-										____pressure += pipeAnalysizer.PipePressure;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Temperature:
-										____temperature += pipeAnalysizer.PipeTemperature;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Energy:
-										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, pipeAnalysizer.NetworkAtmosphere, pipeAnalysizer);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, pipeAnalysizer.NetworkAtmosphere, true);
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, pipeAnalysizer.NetworkAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Quantity:
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, pipeAnalysizer.NetworkAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Volume:
-										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, pipeAnalysizer.NetworkAtmosphere);
-										break;
-								}
-								____sensors++;
+								case MGDCOPatchHelper.PatchDataType.Pressure:
+									____pressure += gasTankStorage.TankPressure;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Temperature:
+									____temperature += gasTankStorage.TankTemperature;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Energy:
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasTankStorage.InternalAtmosphere, gasTankStorage);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Ratio:
+									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasTankStorage.InternalAtmosphere, true);
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasTankStorage.InternalAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Quantity:
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasTankStorage.InternalAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Volume:
+									volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasTankStorage.InternalAtmosphere);
+									break;
 							}
+							____sensors++;
 						}
-						int gas_tank_storage_count = __instance.GasTankStorages.Count;
-						while (gas_tank_storage_count-- > 0)
+					}
+					int count4 = __instance.Structures.Count;
+					while (count4-- > 0)
+					{
+						Structure structure = __instance.Structures[count4];
+						if (structure && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && structure.InternalAtmosphere != null && structure.HasReadableAtmosphere)
 						{
-							GasTankStorage gasTankStorage = __instance.GasTankStorages[gas_tank_storage_count];
-							if (gasTankStorage && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasTankStorage) && gasTankStorage.HasReadableAtmosphere)
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
 							{
-								switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
-								{
-									case MGDCOPatchHelper.PatchDataType.Pressure:
-										____pressure += gasTankStorage.TankPressure;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Temperature:
-										____temperature += gasTankStorage.TankTemperature;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Energy:
-										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasTankStorage.InternalAtmosphere, gasTankStorage);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasTankStorage.InternalAtmosphere, true);
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasTankStorage.InternalAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Quantity:
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasTankStorage.InternalAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Volume:
-										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasTankStorage.InternalAtmosphere);
-										break;
-								}
-								____sensors++;
+								case MGDCOPatchHelper.PatchDataType.Pressure:
+									____pressure += structure.InternalAtmosphere.PressureGassesAndLiquids;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Temperature:
+									____temperature += structure.InternalAtmosphere.Temperature;
+									break;
+								case MGDCOPatchHelper.PatchDataType.Energy:
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, structure.InternalAtmosphere, structure);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Ratio:
+									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, structure.InternalAtmosphere, true);
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, structure.InternalAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Quantity:
+									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, structure.InternalAtmosphere, combinedQuantity);
+									break;
+								case MGDCOPatchHelper.PatchDataType.Volume:
+									volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, structure.InternalAtmosphere);
+									break;
 							}
+							____sensors++;
 						}
-						int count4 = __instance.Structures.Count;
-						while (count4-- > 0)
-						{
-							Structure structure = __instance.Structures[count4];
-							if (structure && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && structure.InternalAtmosphere != null && structure.HasReadableAtmosphere)
-							{
-								switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
-								{
-									case MGDCOPatchHelper.PatchDataType.Pressure:
-										____pressure += structure.InternalAtmosphere.PressureGassesAndLiquids;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Temperature:
-										____temperature += structure.InternalAtmosphere.Temperature;
-										break;
-									case MGDCOPatchHelper.PatchDataType.Energy:
-										energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, structure.InternalAtmosphere, structure);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Ratio:
-										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, structure.InternalAtmosphere, true);
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, structure.InternalAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Quantity:
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, structure.InternalAtmosphere, combinedQuantity);
-										break;
-									case MGDCOPatchHelper.PatchDataType.Volume:
-										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, structure.InternalAtmosphere);
-										break;
-								}
-								____sensors++;
-							}
-						}
-						____temperature /= (float)____sensors;
-						____pressure /= (float)____sensors;
-						ratio = quantity/totalMoles;
+					}
+					____temperature /= (float)____sensors;
+					____pressure /= (float)____sensors;
+					ratio = quantity/totalMoles;
 
-						if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Temperature)
+					if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Temperature)
+					{
+						if (float.IsNaN(____temperature))
 						{
-							if (float.IsNaN(____temperature))
+							____displayText = "NAN" + ("|" + displayUnits);
+							if (!____notANumber)
 							{
-								____displayText = "NAN" + ("|" + displayUnits);
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-							else
-							{
-								if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
-								{
-									____displayText = MGDCOPatchHelper.FormatSIUnits(____temperature, displayUnits);
-								}
-								else
-								{
-									string format = "F1";
-									float num = ____temperature - 273.15f;
-									if (num >= 1000f)
-									{
-										format = "F0";
-									}
-									if (num <= -100f)
-									{
-										format = "F0";
-									}
-									if (num == 0)
-									{
-										format = "F0";
-									}
-									____displayText = ((____temperature <= 1f) ? "-" : num.ToString(format)) + "|" + displayUnits;
-								}
-								if (____notANumber)
-								{
-									____notANumber = false;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-						}
-						else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Ratio)
-						{
-							if (float.IsNaN(ratio))
-							{
-								// "|" + displayUnits is at the end of the function
-								____displayText = "NAN";
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-							else
-							{
-								if (ratio >= 100f) 
-								{
-									____displayText = "100";
-								}
-								else if (ratio <= 0f)
-								{
-									____displayText = "0";
-
-								}
-								else
-								{
-									____displayText = ratio.ToString("P");
-								}
-							}
-							____displayText += ("|" + displayUnits);
-						}
-						else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Volume)
-						{
-							if (float.IsNaN(volume))
-							{
-								____displayText = "NAN" + ("|" + displayUnits);
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-							else
-							{
-								____displayText = MGDCOPatchHelper.FormatSIUnits(volume, displayUnits);
-							}
-						}
-						else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Quantity)
-						{
-							if (float.IsNaN(quantity))
-							{
-								____displayText = "NAN" + ("|" + displayUnits);
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-							else
-							{
-								____displayText = MGDCOPatchHelper.FormatSIUnits(quantity, displayUnits);
-							}
-						}
-						else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Energy)
-						{
-							if (float.IsNaN(energy))
-							{
-								____displayText = "NAN" + ("|" + displayUnits);
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
-							}
-							else
-							{
-								____displayText = MGDCOPatchHelper.FormatSIUnits(energy, displayUnits);
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
 							}
 						}
 						else
 						{
-							if (float.IsNaN(____pressure))
+							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
 							{
-								____displayText = "NAN";
-								if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.PrecisePressure)
-								{
-									____displayText += ("|" + displayUnits);
-								}
-								if (!____notANumber)
-								{
-									____notANumber = true;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
-								}
+								____displayText = MGDCOPatchHelper.FormatSIUnits(____temperature, displayUnits);
 							}
 							else
 							{
-								____displayPressure = Mathf.Lerp(____displayPressure, ____pressure, __instance.LerpSpeed);
-								if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
+								string format = "F1";
+								float num = ____temperature - 273.15f;
+								if (num >= 1000f)
 								{
-									____displayText = __instance.FormatDisplayPressure(____displayPressure);
-									__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
+									format = "F0";
 								}
-								else // mode is precise pressure
+								if (num <= -100f)
 								{
-									float pressureInPa = ____displayPressure * 1000f;
-									____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
+									format = "F0";
 								}
-								if (____notANumber)
+								if (num == 0)
 								{
-									____notANumber = false;
-									var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-									error_check.Forget();
+									format = "F0";
 								}
+								____displayText = ((____temperature <= 1f) ? "-" : num.ToString(format)) + "|" + displayUnits;
+							}
+							if (____notANumber)
+							{
+								____notANumber = false;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+					}
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Ratio)
+					{
+						if (float.IsNaN(ratio))
+						{
+							// "|" + displayUnits is at the end of the function
+							____displayText = "NAN";
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+						else
+						{
+							if (ratio >= 100f) 
+							{
+								____displayText = "100";
+							}
+							else if (ratio <= 0f)
+							{
+								____displayText = "0";
+
+							}
+							else
+							{
+								____displayText = ratio.ToString("P");
+							}
+						}
+						____displayText += ("|" + displayUnits);
+					}
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Volume)
+					{
+						if (float.IsNaN(volume))
+						{
+							____displayText = "NAN" + ("|" + displayUnits);
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+						else
+						{
+							____displayText = MGDCOPatchHelper.FormatSIUnits(volume, displayUnits);
+						}
+					}
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Quantity)
+					{
+						if (float.IsNaN(quantity))
+						{
+							____displayText = "NAN" + ("|" + displayUnits);
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+						else
+						{
+							____displayText = MGDCOPatchHelper.FormatSIUnits(quantity, displayUnits);
+						}
+					}
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Energy)
+					{
+						if (float.IsNaN(energy))
+						{
+							____displayText = "NAN" + ("|" + displayUnits);
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+						else
+						{
+							____displayText = MGDCOPatchHelper.FormatSIUnits(energy, displayUnits);
+						}
+					}
+					else
+					{
+						if (float.IsNaN(____pressure))
+						{
+							____displayText = "NAN";
+							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.PrecisePressure)
+							{
+								____displayText += ("|" + displayUnits);
+							}
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
+						}
+						else
+						{
+							____displayPressure = Mathf.Lerp(____displayPressure, ____pressure, __instance.LerpSpeed);
+							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
+							{
+								____displayText = __instance.FormatDisplayPressure(____displayPressure);
+								__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
+							}
+							else // mode is precise pressure
+							{
+								float pressureInPa = ____displayPressure * 1000f;
+								____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
+							}
+							if (____notANumber)
+							{
+								____notANumber = false;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
 							}
 						}
 					}
 				}
+			
 			}
 			return false;
 		}
