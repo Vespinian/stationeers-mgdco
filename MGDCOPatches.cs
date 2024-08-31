@@ -58,7 +58,10 @@ namespace MoreGasDisplayConsoleOptions
 		{
 			if (__result == false)
 			{
-				__result = (device is ISetable);
+				if ((device is LogicMemory) || (device is LogicReader))
+				{ 
+					__result = true;
+				}
 			}
 		}
 	}
