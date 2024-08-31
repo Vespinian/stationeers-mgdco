@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>MoreGasDisplayConsoleOptions [StationeersMods]</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00004.0</Version>
+  <Version>0.1.0000.00005.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]MoreGasDisplayConsoleOptions[/h1]
@@ -23,7 +23,7 @@
     ex: inputting "O2" will set the mode to "O2 Ratio".
     ex: inputting "4" will set the mode to "Total Moles".
 
-    This mod also adds settable devices to the list just like the graph console does. This will allow you to add a devices like logic memories to your linked devices.
+    This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
     To have the units correctly reflected in the console the setting must be in:
     [*] kPa for pressures
     [*] K for temperatures
@@ -31,7 +31,7 @@
     [*] J for energy
     [*] L for volumes
     [*] 0 to 1 for ratio mode, although you can go over 100% if you want.
-    [b]Note that in ratio mode, if you have a settable devices linked, other devices are going to be ignored and ratios from setable devices are going to be averaged[/b]
+    [b]Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged[/b]
 
     Source: https://github.com/Vespinian/stationeers-mgdco
 
@@ -43,8 +43,8 @@
     [*] Mole count is additive.
     [*] Liquid volume is additive.
     [*] Energy values are additive.
-    [*] Settable devices negative values are ignored
-    [*] Settable devices in ratio mode will average ratio of all settable devices and ignore all other devices.
+    [*] Logic memory/reader negative values are ignored
+    [*] Logic memory/reader in ratio mode will average ratio of all logic memory/reader and ignore all other devices.
     [/list]
 
     List of tags and modes:
@@ -119,6 +119,10 @@
 
   <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
   <ChangeLog>
+    [h3]Version 0.1.0000.00005.0:[/h3]
+    [list]
+    [*]Limited scope of setable devices to logic readers and logic memories.
+    [/list]
     [h3]Version 0.1.0000.00004.0:[/h3]
     [list]
     [*]Added Setable devices to the device list like the graph display.
@@ -164,7 +168,7 @@ The filter first checks if you inputted a tag listed below, if it gets no match 
 ex: inputting "LVOLR" will set the mode to "Liquid VOL Ratio".
 ex: inputting "O2" will set the mode to "O2 Ratio".
 
-This mod also adds settable devices to the list just like the graph console does. This will allow you to add a logic reader or logic memory to your linked devices.
+This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
 To have the units correctly reflected in the console the setting must be in:
 * kPa for pressures
 * K for temperatures
@@ -172,7 +176,7 @@ To have the units correctly reflected in the console the setting must be in:
 * J for energy
 * L for volumes
 * 0 to 1 for ratio mode, although you can go over 100% if you want.
-<b>Note that in ratio mode, if you have a settable device, other devices are going to be ignored and ratios from setable devices are going to be averaged</b>
+<b>Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged</b>
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
 
@@ -185,8 +189,8 @@ Exepected Behavior:
     * Mol count is additive.
     * Liquid volume is additive.
     * Energy values are additive.
-    * Settable devices negative values are ignored
-    * Settable devices in ratio mode will always output 0 unless another device is selected.
+    * Logic memory/reader negative values are ignored
+    * Logic memory/reader in ratio mode will average ratio of all logic memory/reader and ignore all other devices.
     
 List of modes:
   General Modes:
