@@ -25,12 +25,14 @@
 
     This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
     To have the units correctly reflected in the console the setting must be in:
+    [list]
     [*] kPa for pressures
     [*] K for temperatures
     [*] mol for moles
     [*] J for energy
     [*] L for volumes
     [*] 0 to 1 for ratio mode, although you can go over 100% if you want.
+    [/list]
     [b]Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged[/b]
 
     Source: https://github.com/Vespinian/stationeers-mgdco
@@ -174,12 +176,12 @@ ex: inputting "O2" will set the mode to "O2 Ratio".
 
 This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
 To have the units correctly reflected in the console the setting must be in:
-* kPa for pressures
-* K for temperatures
-* mol for moles
-* J for energy
-* L for volumes
-* 0 to 1 for ratio mode, although you can go over 100% if you want.
+    * kPa for pressures
+    * K for temperatures
+    * mol for moles
+    * J for energy
+    * L for volumes
+    * 0 to 1 for ratio mode, although you can go over 100% if you want.
 <b>Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged</b>
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
