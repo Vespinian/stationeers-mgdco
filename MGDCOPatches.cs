@@ -17,6 +17,77 @@ using InputSystem;
 
 namespace MoreGasDisplayConsoleOptions
 {
+	public static class GasDisplayExtenderDict { 
+		public static Dictionary<GasDisplay, GasDisplayExtender> gasDisplayDict = new Dictionary<GasDisplay, GasDisplayExtender>();
+
+		public class GasDisplayExtender
+		{
+			public List<ISetable> SetableDevices = new List<ISetable>();
+		}
+	}
+
+	[HarmonyPatch(typeof(GasDisplay))]
+	[HarmonyPatch("Awake")]
+	public class LinkExtenderNDisplay
+	{
+		static void Postfix(GasDisplay __instance)
+		{
+			GasDisplayExtenderDict.gasDisplayDict.Add(__instance, new GasDisplayExtenderDict.GasDisplayExtender());
+		}
+	}
+
+	[HarmonyPatch(typeof(Motherboard))]
+	[HarmonyPatch("OnDestroy")]
+	public class UnLinkExtenderNDisplay
+	{
+		static bool Prefix(Motherboard __instance)
+		{
+			if (__instance is GasDisplay) 
+			{
+				GasDisplayExtenderDict.gasDisplayDict.Remove((GasDisplay)__instance);
+			}
+			return true;
+		}
+	}
+
+	[HarmonyPatch(typeof(GasDisplay))]
+	[HarmonyPatch("CanDeviceLink")]
+	public class LinkISettable
+	{
+		static void Postfix(GasDisplay __instance, Device device, ref bool __result)
+		{
+			if (__result == false)
+			{
+				__result = (device is ISetable);
+			}
+		}
+	}
+
+	[HarmonyPatch(typeof(GasDisplay))]
+	[HarmonyPatch("OnDeviceListChanged")]
+	public class PatchDeviceListChanged
+	{
+		static void Postfix(GasDisplay __instance)
+		{
+			//List<Device> linkedDevices = __instance.LinkedDevices;
+			lock (__instance.LinkedDevices)
+			{
+				GasDisplayExtenderDict.gasDisplayDict[__instance].SetableDevices.Clear();
+				foreach (Device device in __instance.LinkedDevices)
+				{
+					if (__instance.IsDeviceConnected(device))
+					{
+						ISetable setableDevice = device as ISetable;
+						if (setableDevice != null)
+						{
+							GasDisplayExtenderDict.gasDisplayDict[__instance].SetableDevices.Add(setableDevice);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	[HarmonyPatch(typeof(GasDisplay))]
 	[HarmonyPatch("ButtonToggleMode")]
 	public class ButtonTogglePatch
@@ -186,13 +257,25 @@ namespace MoreGasDisplayConsoleOptions
 					Chemistry.GasType? gasSelected = MGDCOPatchHelper.getGasDisplayModeGas(__instance.Flag);
 					bool combinedQuantity = MGDCOPatchHelper.getGasDisplayModeCombinedFlag(__instance.Flag);
 					____sensors = 0;
-					____temperature = 0f;
-					____pressure = 0f;
-					float ratio = 0f;
-					float quantity = 0f;
-					float volume = 0f;
-					float totalMoles = 0f;
-					float energy = 0f;
+
+					float settableNum = 0;
+					float settableDevices = 0;
+					foreach (ISetable setable in GasDisplayExtenderDict.gasDisplayDict[__instance].SetableDevices)
+					{
+						if (setable.Setting >= 0)
+						{
+							settableNum += (float)setable.Setting;
+						}
+						settableDevices++;
+					}
+					____temperature = settableNum;
+					____pressure = settableNum;
+					float ratio = settableNum;
+					float quantity = settableNum;
+					float volume = settableNum;
+					float totalMoles = settableNum;
+					float energy = settableNum;
+
 					int gas_sensor_count = __instance.GasSensors.Count;
 					while (gas_sensor_count-- > 0)
 					{
@@ -316,9 +399,16 @@ namespace MoreGasDisplayConsoleOptions
 							____sensors++;
 						}
 					}
-					____temperature /= (float)____sensors;
-					____pressure /= (float)____sensors;
-					ratio = quantity/totalMoles;
+					if (settableNum == 0)
+					{
+						ratio = quantity / totalMoles;
+					} 
+					else 
+					{
+						ratio /= (float)settableDevices;
+					}
+					____temperature /= ((float)____sensors + settableDevices);
+					____pressure /= ((float)____sensors + settableDevices);
 
 					if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Temperature)
 					{
