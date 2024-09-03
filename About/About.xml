@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>MoreGasDisplayConsoleOptions [StationeersMods]</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00006.0</Version>
+  <Version>0.1.0000.00007.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]MoreGasDisplayConsoleOptions[/h1]
@@ -23,7 +23,7 @@
     ex: inputting "O2" will set the mode to "O2 Ratio".
     ex: inputting "4" will set the mode to "Total Moles".
 
-    This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
+    This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add logic memories, logic readers and circuit housings to your linked devices.
     To have the units correctly reflected in the console the setting must be in:
     [list]
     [*] kPa for pressures
@@ -33,11 +33,11 @@
     [*] L for volumes
     [*] 0 to 1 for ratio mode, although you can go over 100% if you want.
     [/list]
-    [b]Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged[/b]
+    [b]Note that in ratio mode, if you have a logic memories/readers and circuit housings linked, other devices are going to be ignored and ratios from setable devices are going to be averaged[/b]
 
     Source: https://github.com/Vespinian/stationeers-mgdco
 
-    Exepected Behavior:
+    Expected Behavior:
     [list]
     [*] Temperatures are averaged
     [*] Pressures are averaged
@@ -45,8 +45,8 @@
     [*] Mole count is additive.
     [*] Liquid volume is additive.
     [*] Energy values are additive.
-    [*] Logic memory/reader negative values are ignored
-    [*] Logic memory/reader in ratio mode will average ratio of all logic memory/reader and ignore all other devices.
+    [*] Logic memory/reader and circuit housing negative values are ignored
+    [*] Logic memory/reader and circuit housing in ratio mode will average ratio of all logic memories/readers and circuit housings and ignore all other devices.
     [/list]
 
     List of tags and modes:
@@ -121,6 +121,10 @@
 
   <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
   <ChangeLog>
+    [h3]Version 0.1.0000.00007.0:[/h3]
+    [list]
+    [*]Added Circuit Housing to device list as a setable device.
+    [/list]
     [h3]Version 0.1.0000.00006.0:[/h3]
     [list]
     [*]Fixed incompatible settable devices showing on device list.
@@ -174,7 +178,7 @@ The filter first checks if you inputted a tag listed below, if it gets no match 
 ex: inputting "LVOLR" will set the mode to "Liquid VOL Ratio".
 ex: inputting "O2" will set the mode to "O2 Ratio".
 
-This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add a devices logic memories and logic readers to your linked devices.
+This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add logic memories, logic readers and circuit housings to your linked devices.
 To have the units correctly reflected in the console the setting must be in:
     * kPa for pressures
     * K for temperatures
@@ -182,21 +186,21 @@ To have the units correctly reflected in the console the setting must be in:
     * J for energy
     * L for volumes
     * 0 to 1 for ratio mode, although you can go over 100% if you want.
-<b>Note that in ratio mode, if you have a logic memory/reader linked, other devices are going to be ignored and ratios from setable devices are going to be averaged</b>
+<b>Note that in ratio mode, if you have a logic memories/readers and circuit housings linked, other devices are going to be ignored and ratios from setable devices are going to be averaged</b>
 
 <b>WARNING:</b> <color=#ff0000> This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.</color>
 
 Source: https://github.com/Vespinian/stationeers-mgdco
 
-Exepected Behavior:
+Expected Behavior:
     * Temperatures are averaged
     * Pressures are averaged
     * Ratios are calculated by summing the total amount of moles of the selected gas in every selected device and dividing it by the sum of the total amount of moles in every selected device.
     * Mol count is additive.
     * Liquid volume is additive.
     * Energy values are additive.
-    * Logic memory/reader negative values are ignored
-    * Logic memory/reader in ratio mode will average ratio of all logic memory/reader and ignore all other devices.
+    * Logic memory/reader and circuit housing negative values are ignored
+    * Logic memory/reader and circuit housing in ratio mode will average ratio of all logic memories/readers and circuit housings and ignore all other devices.
     
 List of modes:
   General Modes:

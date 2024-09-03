@@ -58,7 +58,7 @@ namespace MoreGasDisplayConsoleOptions
 		{
 			if (__result == false)
 			{
-				if ((device is LogicMemory) || (device is LogicReader))
+				if ((device is LogicMemory) || (device is LogicReader) || (device is CircuitHousing))
 				{ 
 					__result = true;
 				}
@@ -78,7 +78,7 @@ namespace MoreGasDisplayConsoleOptions
 				GasDisplayExtenderDict.gasDisplayDict[__instance].SetableDevices.Clear();
 				foreach (Device device in __instance.LinkedDevices)
 				{
-					if (((device is LogicMemory) || (device is LogicReader)) && (__instance.IsDeviceConnected(device)))
+					if (((device is LogicMemory) || (device is LogicReader) || (device is CircuitHousing)) && (__instance.IsDeviceConnected(device)))
 					{
 						ISetable setableDevice = device as ISetable;
 						if (setableDevice != null)
