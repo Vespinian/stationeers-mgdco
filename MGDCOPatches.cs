@@ -228,7 +228,7 @@ namespace MoreGasDisplayConsoleOptions
 			return instance.LinkedDevices;
 		}
 
-		static bool Prefix(GasDisplay __instance, ref float ____temperature, ref float ____pressure, ref int ____sensors, ref string ____displayText, ref bool ____notANumber, ref float ____displayPressure, ref int ____currentUnitIndex, string[] ____displayUnits)
+		static bool Prefix(GasDisplay __instance, ref TemperatureKelvin ____temperature, ref PressurekPa ____pressure, ref int ____sensors, ref string ____displayText, ref bool ____notANumber, ref float ____displayPressure, ref int ____currentUnitIndex, string[] ____displayUnits)
 		{
 			var shouldDraw = AccessTools.Method(typeof(GasDisplay), "ShouldDraw");
 			var errorCheckFromThread = AccessTools.Method(typeof(GasDisplay), "ErrorCheckFromThread");
@@ -271,9 +271,9 @@ namespace MoreGasDisplayConsoleOptions
 						}
 						settableDevices++;
 					}
-					____temperature = settableNum;
-					____pressure = settableNum;
-					float ratio = settableNum;
+					____temperature = new TemperatureKelvin(settableNum);
+                    ____pressure = new PressurekPa(settableNum);
+                    float ratio = settableNum;
 					float quantity = settableNum;
 					float volume = settableNum;
 					float totalMoles = settableNum;
@@ -415,46 +415,33 @@ namespace MoreGasDisplayConsoleOptions
 
 					if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Temperature)
 					{
-						if (float.IsNaN(____temperature))
+						if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
 						{
-							____displayText = "NAN" + ("|" + displayUnits);
-							if (!____notANumber)
-							{
-								____notANumber = true;
-								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-								error_check.Forget();
-							}
+							____displayText = MGDCOPatchHelper.FormatSIUnits(____temperature.ToFloat(), displayUnits);
 						}
 						else
 						{
-							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
+							string format = "F1";
+							float num = ____temperature.ToFloat() - 273.15f;
+							if (num >= 1000f)
 							{
-								____displayText = MGDCOPatchHelper.FormatSIUnits(____temperature, displayUnits);
+								format = "F0";
 							}
-							else
+							if (num <= -100f)
 							{
-								string format = "F1";
-								float num = ____temperature - 273.15f;
-								if (num >= 1000f)
-								{
-									format = "F0";
-								}
-								if (num <= -100f)
-								{
-									format = "F0";
-								}
-								if (num == 0)
-								{
-									format = "F0";
-								}
-								____displayText = ((____temperature <= 1f) ? "-" : num.ToString(format)) + "|" + displayUnits;
+								format = "F0";
 							}
-							if (____notANumber)
+							if (num == 0)
 							{
-								____notANumber = false;
-								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-								error_check.Forget();
+								format = "F0";
 							}
+							____displayText = ((____temperature.ToFloat() <= 1f) ? "-" : num.ToString(format)) + "|" + displayUnits;
+						}
+						if (____notANumber)
+						{
+							____notANumber = false;
+							var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+							error_check.Forget();
 						}
 					}
 					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Ratio)
@@ -541,39 +528,22 @@ namespace MoreGasDisplayConsoleOptions
 					}
 					else
 					{
-						if (float.IsNaN(____pressure))
+						____displayPressure = Mathf.Lerp(____displayPressure, ____pressure.ToFloat(), __instance.LerpSpeed);
+						if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
 						{
-							____displayText = "NAN";
-							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.PrecisePressure)
-							{
-								____displayText += ("|" + displayUnits);
-							}
-							if (!____notANumber)
-							{
-								____notANumber = true;
-								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-								error_check.Forget();
-							}
+							____displayText = __instance.FormatDisplayPressure(____displayPressure);
+							__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
 						}
-						else
+						else // mode is precise pressure
 						{
-							____displayPressure = Mathf.Lerp(____displayPressure, ____pressure, __instance.LerpSpeed);
-							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
-							{
-								____displayText = __instance.FormatDisplayPressure(____displayPressure);
-								__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
-							}
-							else // mode is precise pressure
-							{
-								float pressureInPa = ____displayPressure * 1000f;
-								____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
-							}
-							if (____notANumber)
-							{
-								____notANumber = false;
-								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-								error_check.Forget();
-							}
+							float pressureInPa = ____displayPressure * 1000f;
+							____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
+						}
+						if (____notANumber)
+						{
+							____notANumber = false;
+							var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+							error_check.Forget();
 						}
 					}
 				}

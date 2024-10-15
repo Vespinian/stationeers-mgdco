@@ -197,55 +197,55 @@ namespace MoreGasDisplayConsoleOptions
 			switch (gasType)
 			{
 				case null:
-					result = atmosphere.TotalMolesGases;
+					result = atmosphere.TotalMolesGases.ToFloat();
 					break;
 				case Chemistry.GasType.Undefined: // hack to get liquid mols
-					result = atmosphere.TotalMolesLiquids;
-					break;
+					result = atmosphere.TotalMolesLiquids.ToFloat();
+                    break;
 				case Chemistry.GasType.Oxygen:
-					result = atmosphere.GasMixture.Oxygen.Quantity;
+					result = atmosphere.GasMixture.Oxygen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Nitrogen:
-					result = atmosphere.GasMixture.Nitrogen.Quantity;
+					result = atmosphere.GasMixture.Nitrogen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Volatiles:
-					result = atmosphere.GasMixture.Volatiles.Quantity;
+					result = atmosphere.GasMixture.Volatiles.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Pollutant:
-					result = atmosphere.GasMixture.Pollutant.Quantity;
+					result = atmosphere.GasMixture.Pollutant.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.CarbonDioxide:
-					result = atmosphere.GasMixture.CarbonDioxide.Quantity;
+					result = atmosphere.GasMixture.CarbonDioxide.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Steam:
-					result = atmosphere.GasMixture.Steam.Quantity;
+					result = atmosphere.GasMixture.Steam.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.NitrousOxide:
-					result = atmosphere.GasMixture.NitrousOxide.Quantity;
+					result = atmosphere.GasMixture.NitrousOxide.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidOxygen:
-					result = atmosphere.GasMixture.LiquidOxygen.Quantity;
+					result = atmosphere.GasMixture.LiquidOxygen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidNitrogen:
-					result = atmosphere.GasMixture.LiquidNitrogen.Quantity;
+					result = atmosphere.GasMixture.LiquidNitrogen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidVolatiles:
-					result = atmosphere.GasMixture.LiquidVolatiles.Quantity;
+					result = atmosphere.GasMixture.LiquidVolatiles.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidPollutant:
-					result = atmosphere.GasMixture.LiquidPollutant.Quantity;
+					result = atmosphere.GasMixture.LiquidPollutant.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidCarbonDioxide:
-					result = atmosphere.GasMixture.LiquidCarbonDioxide.Quantity;
+					result = atmosphere.GasMixture.LiquidCarbonDioxide.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Water:
-					result = atmosphere.GasMixture.Water.Quantity;
+					result = atmosphere.GasMixture.Water.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidNitrousOxide:
-					result = atmosphere.GasMixture.LiquidNitrousOxide.Quantity;
+					result = atmosphere.GasMixture.LiquidNitrousOxide.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.PollutedWater:
-					result = atmosphere.GasMixture.PollutedWater.Quantity;
+					result = atmosphere.GasMixture.PollutedWater.Quantity.ToFloat();
 					break;
 			}
 			if(combined == false)
@@ -254,29 +254,29 @@ namespace MoreGasDisplayConsoleOptions
 			switch (gasType)
 			{
 				case null:
-					result += atmosphere.TotalMolesLiquids;
+					result += atmosphere.TotalMolesLiquids.ToFloat();
 					break;
 				case Chemistry.GasType.Oxygen:
-					result += atmosphere.GasMixture.LiquidOxygen.Quantity;
+					result += atmosphere.GasMixture.LiquidOxygen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Nitrogen:
-					result += atmosphere.GasMixture.LiquidNitrogen.Quantity;
+					result += atmosphere.GasMixture.LiquidNitrogen.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Volatiles:
-					result += atmosphere.GasMixture.LiquidVolatiles.Quantity;
+					result += atmosphere.GasMixture.LiquidVolatiles.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Pollutant:
-					result += atmosphere.GasMixture.LiquidPollutant.Quantity;
+					result += atmosphere.GasMixture.LiquidPollutant.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.CarbonDioxide:
-					result += atmosphere.GasMixture.LiquidCarbonDioxide.Quantity;
+					result += atmosphere.GasMixture.LiquidCarbonDioxide.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Steam:
-					result += atmosphere.GasMixture.Water.Quantity;
-					result += atmosphere.GasMixture.PollutedWater.Quantity;
+					result += atmosphere.GasMixture.Water.Quantity.ToFloat();
+					result += atmosphere.GasMixture.PollutedWater.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.NitrousOxide:
-					result += atmosphere.GasMixture.LiquidNitrousOxide.Quantity;
+					result += atmosphere.GasMixture.LiquidNitrousOxide.Quantity.ToFloat();
 					break;
 			}
 			return result;
@@ -288,31 +288,31 @@ namespace MoreGasDisplayConsoleOptions
 			switch (gasType)
 			{
 				case null:
-					result = atmosphere.TotalVolumeLiquids;
+					result = atmosphere.TotalVolumeLiquids.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidOxygen:
-					result = atmosphere.GasMixture.LiquidOxygen.Volume;
+					result = atmosphere.GasMixture.LiquidOxygen.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidNitrogen:
-					result = atmosphere.GasMixture.LiquidNitrogen.Volume;
+					result = atmosphere.GasMixture.LiquidNitrogen.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidVolatiles:
-					result = atmosphere.GasMixture.LiquidVolatiles.Volume;
+					result = atmosphere.GasMixture.LiquidVolatiles.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidPollutant:
-					result = atmosphere.GasMixture.LiquidPollutant.Volume;
+					result = atmosphere.GasMixture.LiquidPollutant.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidCarbonDioxide:
-					result = atmosphere.GasMixture.LiquidCarbonDioxide.Volume;
+					result = atmosphere.GasMixture.LiquidCarbonDioxide.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.Water:
-					result = atmosphere.GasMixture.Water.Volume;
+					result = atmosphere.GasMixture.Water.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidNitrousOxide:
-					result = atmosphere.GasMixture.LiquidNitrousOxide.Volume;
+					result = atmosphere.GasMixture.LiquidNitrousOxide.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.PollutedWater:
-					result = atmosphere.GasMixture.PollutedWater.Volume;
+					result = atmosphere.GasMixture.PollutedWater.Volume.ToFloat();
 					break;
 			}
 			return result;
@@ -347,7 +347,7 @@ namespace MoreGasDisplayConsoleOptions
 			}
 			if (energy_type == PatchGasDisplayMode.EnergyLatent)
 			{
-				energy = atmosphere.LastTickLatentEnergy;
+				energy = atmosphere.LastTickLatentEnergy.ToFloat();
 			}
 			return energy;
 		}
