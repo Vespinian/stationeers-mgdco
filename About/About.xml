@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>MoreGasDisplayConsoleOptions [StationeersMods]</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00008.0</Version>
+  <Version>0.1.0000.00009.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]MoreGasDisplayConsoleOptions[/h1]
@@ -121,6 +121,10 @@
 
   <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
   <ChangeLog>
+    [h3]Version 0.1.0000.00009.0:[/h3]
+    [list]
+    [*]Rebuilt for last version.
+    [/list]
     [h3]Version 0.1.0000.00008.0:[/h3]
     [list]
     [*]Updated code to work with the in water world update.
