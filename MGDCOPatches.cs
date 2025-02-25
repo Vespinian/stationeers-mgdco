@@ -285,6 +285,9 @@ namespace MoreGasDisplayConsoleOptions
 						GasSensor gasSensor = __instance.GasSensors[gas_sensor_count];
 						if (gasSensor && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasSensor))
 						{
+							gasSensor.FindAtmosphere();
+							if (gasSensor.WorldAtmosphere == null)
+								continue;
 							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									____pressure += gasSensor.AirPressure;
@@ -296,14 +299,14 @@ namespace MoreGasDisplayConsoleOptions
 									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasSensor.WorldAtmosphere, gasSensor);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Ratio:
-									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
-									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
+										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
+										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Quantity:
-									quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
+										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Volume:
-									volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
+										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
 									break;
 							}
 							____sensors++;
