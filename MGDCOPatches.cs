@@ -199,15 +199,6 @@ namespace MoreGasDisplayConsoleOptions
 			if (____displayText == null) {
 				return;
 			}
-			if (WorldManager.IsGamePaused)
-			{
-				return;
-			}
-			var shouldDraw = AccessTools.Method(typeof(GasDisplay), "ShouldDraw");
-			if (!(bool)shouldDraw.Invoke(__instance, null))
-			{
-				return;
-			}
 			string[] splitDisplayText = ____displayText.Split('|');
 			if (splitDisplayText.Length == 2)
 			{
@@ -234,7 +225,6 @@ namespace MoreGasDisplayConsoleOptions
 			var errorCheckFromThread = AccessTools.Method(typeof(GasDisplay), "ErrorCheckFromThread");
 
 			List<Device> linkedDevices = LinkedDevices(__instance);
-
 			if (GameManager.IsBatchMode)
 			{
 				return false;
@@ -288,7 +278,7 @@ namespace MoreGasDisplayConsoleOptions
 							gasSensor.FindAtmosphere();
 							if (gasSensor.WorldAtmosphere == null)
 								continue;
-							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
+                            switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									____pressure += gasSensor.AirPressure;
 									break;
@@ -303,12 +293,12 @@ namespace MoreGasDisplayConsoleOptions
 										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Quantity:
-										quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
+                                        quantity += MGDCOPatchHelper.GetGasSensorQuantity(gasSelected, gasSensor.WorldAtmosphere, combinedQuantity);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Volume:
-										volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
+                                        volume += MGDCOPatchHelper.GetGasSensorLiquidVolume(gasSelected, gasSensor.WorldAtmosphere);
 									break;
-							}
+                            }
 							____sensors++;
 						}
 					}
@@ -383,7 +373,8 @@ namespace MoreGasDisplayConsoleOptions
 							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
 							{
 								case MGDCOPatchHelper.PatchDataType.Pressure:
-									____pressure += structure.InternalAtmosphere.PressureGassesAndLiquids;
+									if (!(structure.InternalAtmosphere.PressureGassesAndLiquids < PressurekPa.Zero))
+										____pressure += structure.InternalAtmosphere.PressureGassesAndLiquids;
 									break;
 								case MGDCOPatchHelper.PatchDataType.Temperature:
 									____temperature += structure.InternalAtmosphere.Temperature;
@@ -474,8 +465,14 @@ namespace MoreGasDisplayConsoleOptions
 							else
 							{
 								____displayText = ratio.ToString("P");
-							}
-						}
+                            }
+                            if (____notANumber)
+                            {
+                                ____notANumber = false;
+                                var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+                                error_check.Forget();
+                            }
+                        }
 						____displayText += ("|" + displayUnits);
 					}
 					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Volume)
@@ -493,7 +490,13 @@ namespace MoreGasDisplayConsoleOptions
 						else
 						{
 							____displayText = MGDCOPatchHelper.FormatSIUnits(volume, displayUnits);
-						}
+                            if (____notANumber)
+                            {
+                                ____notANumber = false;
+                                var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+                                error_check.Forget();
+                            }
+                        }
 					}
 					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Quantity)
 					{
@@ -510,7 +513,13 @@ namespace MoreGasDisplayConsoleOptions
 						else
 						{
 							____displayText = MGDCOPatchHelper.FormatSIUnits(quantity, displayUnits);
-						}
+                            if (____notANumber)
+                            {
+                                ____notANumber = false;
+                                var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+                                error_check.Forget();
+                            }
+                        }
 					}
 					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Energy)
 					{
@@ -522,31 +531,56 @@ namespace MoreGasDisplayConsoleOptions
 								____notANumber = true;
 								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
 								error_check.Forget();
+                            }
+							else
+                            {
+                                ____notANumber = false;
+                                var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+                                error_check.Forget();
+                            }
+                        }
+						else
+						{
+							____displayText = MGDCOPatchHelper.FormatSIUnits(energy, displayUnits);
+                            if (____notANumber)
+                            {
+                                ____notANumber = false;
+                                var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+                                error_check.Forget();
+                            }
+                        }
+					}
+					else
+					{
+						if (____pressure.IsNaN())
+						{
+							____displayText = "NAN";
+							if (!____notANumber)
+							{
+								____notANumber = true;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
 							}
 						}
 						else
 						{
-							____displayText = MGDCOPatchHelper.FormatSIUnits(energy, displayUnits);
-						}
-					}
-					else
-					{
-						____displayPressure = Mathf.Lerp(____displayPressure, ____pressure.ToFloat(), __instance.LerpSpeed);
-						if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
-						{
-							____displayText = __instance.FormatDisplayPressure(____displayPressure);
-							__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
-						}
-						else // mode is precise pressure
-						{
-							float pressureInPa = ____displayPressure * 1000f;
-							____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
-						}
-						if (____notANumber)
-						{
-							____notANumber = false;
-							var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
-							error_check.Forget();
+							____displayPressure = Mathf.Lerp(____displayPressure, ____pressure.ToFloat(), __instance.LerpSpeed);
+							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
+							{
+								____displayText = __instance.FormatDisplayPressure(____displayPressure);
+								__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
+							}
+							else // mode is precise pressure
+							{
+								float pressureInPa = ____displayPressure * 1000f;
+								____displayText = MGDCOPatchHelper.FormatSIUnits(pressureInPa, displayUnits);
+							}
+							if (____notANumber)
+							{
+								____notANumber = false;
+								var error_check = (UniTaskVoid)errorCheckFromThread.Invoke(__instance, null);
+								error_check.Forget();
+							}
 						}
 					}
 				}
