@@ -5,7 +5,7 @@
   <Version>0.1.0000.00012.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
-    [h1]MoreGasDisplayConsoleOptions[/h1]
+    [h1]More Gas Display Console Options[/h1]
     This is a Plugin Mod.
     It requires Bepinex to be installed with the StationeersLaunchPad plugin.
     See: https://github.com/StationeersLaunchPad/StationeersLaunchPad
@@ -177,7 +177,8 @@
     [*]Initial release
     [/list]
   </ChangeLog>
-  <WorkshopHandle></WorkshopHandle>
+  <!-- <WorkshopHandle>3315641641</WorkshopHandle>-->
+  <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
   <Tags>
     <Tag>StationeersLaunchPad</Tag>
   </Tags>
