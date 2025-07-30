@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Objects.Motherboards;
@@ -10,9 +9,7 @@ using Assets.Scripts;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Assets.Scripts.Atmospherics;
-using System.Data;
 using System.Linq;
-using InputSystem;
 
 
 namespace MoreGasDisplayConsoleOptions
@@ -23,6 +20,7 @@ namespace MoreGasDisplayConsoleOptions
 		public class GasDisplayExtender
 		{
 			public List<ISetable> SetableDevices = new List<ISetable>();
+			public int page = 0;
 		}
 	}
 
@@ -33,6 +31,7 @@ namespace MoreGasDisplayConsoleOptions
 		static void Postfix(GasDisplay __instance)
 		{
 			GasDisplayExtenderDict.gasDisplayDict.Add(__instance, new GasDisplayExtenderDict.GasDisplayExtender());
+			GasDisplayExtenderDict.gasDisplayDict[__instance].page = __instance.Flag;
 		}
 	}
 
@@ -40,13 +39,13 @@ namespace MoreGasDisplayConsoleOptions
 	[HarmonyPatch("OnDestroy")]
 	public class UnLinkExtenderNDisplay
 	{
-		static bool Prefix(Motherboard __instance)
+		static void Postfix(Motherboard __instance)
 		{
 			if (__instance is GasDisplay) 
 			{
 				GasDisplayExtenderDict.gasDisplayDict.Remove((GasDisplay)__instance);
 			}
-			return true;
+			return;
 		}
 	}
 
@@ -77,8 +76,8 @@ namespace MoreGasDisplayConsoleOptions
 			{
 				GasDisplayExtenderDict.gasDisplayDict[__instance].SetableDevices.Clear();
 				foreach (Device device in __instance.LinkedDevices)
-				{
-					if (((device is LogicMemory) || (device is LogicReader) || (device is CircuitHousing)) && (__instance.IsDeviceConnected(device)))
+                {
+                    if (((device is LogicMemory) || (device is LogicReader) || (device is CircuitHousing)) && (__instance.IsDeviceConnected(device)))
 					{
 						ISetable setableDevice = device as ISetable;
 						if (setableDevice != null)
@@ -101,21 +100,23 @@ namespace MoreGasDisplayConsoleOptions
 			if (KeyManager.GetButton(quantityModifier))
 			{ 
 				__instance.Flag--;
-			}
+            }
 			else 
 			{
 				__instance.Flag++;
-			}
+            }
 
 			if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
 			{
 				__instance.Flag = 0;
+
 			}
 			else if (__instance.Flag < 0)
 			{
-				__instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - 1;
-			}
-			Motherboard.UseComputer(3, __instance.ReferenceId, __instance.ReferenceId, __instance.Flag, true, "");
+                __instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - 1;
+            }
+
+            Motherboard.UseComputer(3, __instance.ReferenceId, __instance.ReferenceId, __instance.Flag, true, "");
 			return false;
 		}
 	}
@@ -135,8 +136,8 @@ namespace MoreGasDisplayConsoleOptions
 				if (int.TryParse(tag, out index))
 				{
 					if (index >= 1 && index <= (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
-						__instance.SetFlag(index-1);
-					return false;
+						__instance.SetFlag(index - 1);
+                    return false;
 				}
 				else {
 					tag = tag.ToUpper();
@@ -154,8 +155,9 @@ namespace MoreGasDisplayConsoleOptions
 					var queryDisplayNames = MGDCOPatchHelper.GasData.Where(p => p.Value.displayName.Contains(tag))
 															.Select(e => (KeyValuePair<int, (string, string, string, string, Chemistry.GasType?, MGDCOPatchHelper.PatchDataType, bool)>?) e)
 															.FirstOrDefault();
-					if (queryDisplayNames.HasValue) { 
-						__instance.SetFlag(queryDisplayNames.Value.Key);
+					if (queryDisplayNames.HasValue)
+                    {
+                        __instance.SetFlag(queryDisplayNames.Value.Key);
 						return false;
 					}
 				}
@@ -172,19 +174,13 @@ namespace MoreGasDisplayConsoleOptions
 		{
 			__instance.Flag = page;
 			__instance.DisplayMode = GasDisplayMode.Temperature;
-			__instance.DisplayTitle.text = MGDCOPatchHelper.getGasDisplayModeTitle(page);
-			__instance.ToggleModeButtonText.text = MGDCOPatchHelper.getGasDisplayModeButtonName(page);
-			____lastUnitIndex = 0;
-			//__instance.DisplayUnits.text = MGDCOPatchHelper.getDisplayModeUnits(page);
-			//if (page == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
-			//{
-			//	____lastUnitIndex = Array.IndexOf<string>(____displayUnits, __instance.DisplayUnits.text);
-			//}
-			// No clue what this diassembly code was supposed to do, but it doesn't work
-			//Thing.Event displayModeType = __instance.DisplayModeType;
-			//if (displayModeType == null)
-			//	return false;
-			//displayModeType();
+			if (GasDisplayExtenderDict.gasDisplayDict.ContainsKey(__instance))
+			{
+				GasDisplayExtenderDict.gasDisplayDict[__instance].page = page;
+			}
+            __instance.DisplayTitle.text = MGDCOPatchHelper.getGasDisplayModeTitle(page);
+            __instance.ToggleModeButtonText.text = MGDCOPatchHelper.getGasDisplayModeButtonName(page);
+            ____lastUnitIndex = 0;
 			return false;
 		}
 	}
@@ -235,11 +231,12 @@ namespace MoreGasDisplayConsoleOptions
 			}
 			lock (linkedDevices)
 			{
-				string displayUnits = MGDCOPatchHelper.getDisplayModeUnits(__instance.Flag);
+				int page = GasDisplayExtenderDict.gasDisplayDict[__instance].page;
+                string displayUnits = MGDCOPatchHelper.getDisplayModeUnits(page);
 				if (linkedDevices.Count == 0)
 				{
 					____displayText = "-";
-					if (__instance.Flag != (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure) 
+					if (page != (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure) 
 					{
 						____displayText += ("|" + displayUnits);
 					}
@@ -247,8 +244,8 @@ namespace MoreGasDisplayConsoleOptions
 				else
 				{
 					GasDisplayMode displayMode = __instance.DisplayMode;
-					Chemistry.GasType? gasSelected = MGDCOPatchHelper.getGasDisplayModeGas(__instance.Flag);
-					bool combinedQuantity = MGDCOPatchHelper.getGasDisplayModeCombinedFlag(__instance.Flag);
+					Chemistry.GasType? gasSelected = MGDCOPatchHelper.getGasDisplayModeGas(page);
+					bool combinedQuantity = MGDCOPatchHelper.getGasDisplayModeCombinedFlag(page);
 					____sensors = 0;
 
 					float settableNum = 0;
@@ -273,12 +270,12 @@ namespace MoreGasDisplayConsoleOptions
 					while (gas_sensor_count-- > 0)
 					{
 						GasSensor gasSensor = __instance.GasSensors[gas_sensor_count];
-						if (gasSensor && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasSensor))
+						if (gasSensor && __instance.ParentComputer != null && __instance.IsDeviceConnected(gasSensor))
 						{
 							gasSensor.FindAtmosphere();
 							if (gasSensor.WorldAtmosphere == null)
 								continue;
-                            switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag)) {
+                            switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(page)) {
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									____pressure += gasSensor.AirPressure;
 									break;
@@ -286,7 +283,7 @@ namespace MoreGasDisplayConsoleOptions
 									____temperature += gasSensor.AirTemperature;
 									break;
 								case MGDCOPatchHelper.PatchDataType.Energy:
-									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasSensor.WorldAtmosphere, gasSensor);
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)page, gasSensor.WorldAtmosphere, gasSensor);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Ratio:
 										totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasSensor.WorldAtmosphere, true);
@@ -306,9 +303,9 @@ namespace MoreGasDisplayConsoleOptions
 					while (pipe_analyzer_count-- > 0)
 					{
 						PipeAnalysizer pipeAnalysizer = __instance.PipeAnalysizers[pipe_analyzer_count];
-						if (pipeAnalysizer && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(pipeAnalysizer) && pipeAnalysizer.HasReadableAtmosphere)
+						if (pipeAnalysizer && __instance.ParentComputer != null && __instance.IsDeviceConnected(pipeAnalysizer) && pipeAnalysizer.HasReadableAtmosphere)
 						{
-							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(page))
 							{
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									____pressure += pipeAnalysizer.PipePressure;
@@ -317,7 +314,7 @@ namespace MoreGasDisplayConsoleOptions
 									____temperature += pipeAnalysizer.PipeTemperature;
 									break;
 								case MGDCOPatchHelper.PatchDataType.Energy:
-									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, pipeAnalysizer.NetworkAtmosphere, pipeAnalysizer);
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)page, pipeAnalysizer.NetworkAtmosphere, pipeAnalysizer);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Ratio:
 									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, pipeAnalysizer.NetworkAtmosphere, true);
@@ -337,9 +334,9 @@ namespace MoreGasDisplayConsoleOptions
 					while (gas_tank_storage_count-- > 0)
 					{
 						GasTankStorage gasTankStorage = __instance.GasTankStorages[gas_tank_storage_count];
-						if (gasTankStorage && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && __instance.IsDeviceConnected(gasTankStorage) && gasTankStorage.HasReadableAtmosphere)
+						if (gasTankStorage && __instance.ParentComputer != null && __instance.IsDeviceConnected(gasTankStorage) && gasTankStorage.HasReadableAtmosphere)
 						{
-							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(page))
 							{
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									____pressure += gasTankStorage.TankPressure;
@@ -348,7 +345,7 @@ namespace MoreGasDisplayConsoleOptions
 									____temperature += gasTankStorage.TankTemperature;
 									break;
 								case MGDCOPatchHelper.PatchDataType.Energy:
-									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, gasTankStorage.InternalAtmosphere, gasTankStorage);
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)page, gasTankStorage.InternalAtmosphere, gasTankStorage);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Ratio:
 									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, gasTankStorage.InternalAtmosphere, true);
@@ -368,9 +365,9 @@ namespace MoreGasDisplayConsoleOptions
 					while (count4-- > 0)
 					{
 						Structure structure = __instance.Structures[count4];
-						if (structure && __instance.ParentComputer != null && __instance.ParentComputer.DataCableNetwork != null && structure.InternalAtmosphere != null && structure.HasReadableAtmosphere)
+						if (structure && __instance.ParentComputer != null && structure.InternalAtmosphere != null && structure.HasReadableAtmosphere)
 						{
-							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag))
+							switch (MGDCOPatchHelper.getGasDisplayModePatchDataType(page))
 							{
 								case MGDCOPatchHelper.PatchDataType.Pressure:
 									if (!(structure.InternalAtmosphere.PressureGassesAndLiquids < PressurekPa.Zero))
@@ -380,7 +377,7 @@ namespace MoreGasDisplayConsoleOptions
 									____temperature += structure.InternalAtmosphere.Temperature;
 									break;
 								case MGDCOPatchHelper.PatchDataType.Energy:
-									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)__instance.Flag, structure.InternalAtmosphere, structure);
+									energy += MGDCOPatchHelper.GetEnergy((MGDCOPatchHelper.PatchGasDisplayMode)page, structure.InternalAtmosphere, structure);
 									break;
 								case MGDCOPatchHelper.PatchDataType.Ratio:
 									totalMoles += MGDCOPatchHelper.GetGasSensorQuantity(null, structure.InternalAtmosphere, true);
@@ -407,9 +404,9 @@ namespace MoreGasDisplayConsoleOptions
 					____temperature /= ((float)____sensors + settableDevices);
 					____pressure /= ((float)____sensors + settableDevices);
 
-					if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Temperature)
+					if (MGDCOPatchHelper.getGasDisplayModePatchDataType(page) == MGDCOPatchHelper.PatchDataType.Temperature)
 					{
-						if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
+						if (page == (int)MGDCOPatchHelper.PatchGasDisplayMode.TemperatureKelvin)
 						{
 							____displayText = MGDCOPatchHelper.FormatSIUnits(____temperature.ToFloat(), displayUnits);
 						}
@@ -438,7 +435,7 @@ namespace MoreGasDisplayConsoleOptions
 							error_check.Forget();
 						}
 					}
-					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Ratio)
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(page) == MGDCOPatchHelper.PatchDataType.Ratio)
 					{
 						if (float.IsNaN(ratio))
 						{
@@ -475,7 +472,7 @@ namespace MoreGasDisplayConsoleOptions
                         }
 						____displayText += ("|" + displayUnits);
 					}
-					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Volume)
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(page) == MGDCOPatchHelper.PatchDataType.Volume)
 					{
 						if (float.IsNaN(volume))
 						{
@@ -498,7 +495,7 @@ namespace MoreGasDisplayConsoleOptions
                             }
                         }
 					}
-					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Quantity)
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(page) == MGDCOPatchHelper.PatchDataType.Quantity)
 					{
 						if (float.IsNaN(quantity))
 						{
@@ -521,7 +518,7 @@ namespace MoreGasDisplayConsoleOptions
                             }
                         }
 					}
-					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(__instance.Flag) == MGDCOPatchHelper.PatchDataType.Energy)
+					else if (MGDCOPatchHelper.getGasDisplayModePatchDataType(page) == MGDCOPatchHelper.PatchDataType.Energy)
 					{
 						if (float.IsNaN(energy))
 						{
@@ -565,7 +562,7 @@ namespace MoreGasDisplayConsoleOptions
 						else
 						{
 							____displayPressure = Mathf.Lerp(____displayPressure, ____pressure.ToFloat(), __instance.LerpSpeed);
-							if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
+							if (page == (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
 							{
 								____displayText = __instance.FormatDisplayPressure(____displayPressure);
 								__instance.DisplayUnits.text = ____displayUnits[____currentUnitIndex];
