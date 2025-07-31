@@ -127,7 +127,7 @@
     [h3]Version 0.1.0000.00012.0:[/h3]
     [list]
     [*]Changed a patch from a prepatch to postpatch which hopefully should make things more compatible
-    [*]Changed a condition to make the mod compatible with the excellent modular console
+    [*]Removed a condition check that I think is redundant to make the mod compatible with the excellent modular console mod
     [*]Moved over to StationeerLaunchpad
     [/list]
     [h3]Version 0.1.0000.00011.0:[/h3]
@@ -177,7 +177,7 @@
     [*]Initial release
     [/list]
   </ChangeLog>
-  <!-- <WorkshopHandle>3315641641</WorkshopHandle>-->
+  <WorkshopHandle>3315641641</WorkshopHandle>
   <!-- StationeersMods and BepInEx tags for Steam workshop page will be automatically added by the framework when publishing -->
   <Tags>
     <Tag>StationeersLaunchPad</Tag>
