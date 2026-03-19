@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>More Gas Display Console Options</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00012.0</Version>
+  <Version>0.1.0000.00013.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]More Gas Display Console Options[/h1]
@@ -22,7 +22,7 @@
     You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
     To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
     The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
-    ex: inputting "LVOLR" will set the mode to "Liquid VOL Ratio".
+    ex: inputting "LCH4R" will set the mode to "Liquid CH4 Ratio".
     ex: inputting "O2" will set the mode to "O2 Ratio".
     ex: inputting "4" will set the mode to "Total Moles".
 
@@ -92,13 +92,13 @@
     [*] "LPOLR"  - Liquid POL Ratio
     [*] "LPOLM"  - Liquid POL Moles
     [*] "LPOLV"  - Liquid POL Volume
-    [*] "VOLR"   - VOL Ratio
-    [*] "VOLM"   - VOL Moles
-    [*] "GVOLR"  - Gaseous VOL Ratio
-    [*] "GVOLM"  - Gaseous VOL Moles
-    [*] "LVOLR"  - Liquid VOL Ratio
-    [*] "LVOLM"  - Liquid VOL Moles
-    [*] "LVOLV"  - Liquid VOL Volume
+    [*] "CH4R"   - CH4 Ratio
+    [*] "CH4M"   - CH4 Moles
+    [*] "GCH4R"  - Gaseous CH4 Ratio
+    [*] "GCH4M"  - Gaseous CH4 Moles
+    [*] "LCH4R"  - Liquid CH4 Ratio
+    [*] "LCH4M"  - Liquid CH4 Moles
+    [*] "LCH4V"  - Liquid CH4 Volume
     [*] "N2OR"   - N2O Ratio
     [*] "N2OM"   - N2O Moles
     [*] "GN2OR"  - Gaseous N2O Ratio
@@ -124,6 +124,10 @@
 
   <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
   <ChangeLog>
+    [h3]Version 0.1.0000.00013.0:[/h3]
+    [list]
+    [*]Changed VOL to CH4, more gasses to come
+    [/list]
     [h3]Version 0.1.0000.00012.0:[/h3]
     [list]
     [*]Changed a patch from a prepatch to postpatch which hopefully should make things more compatible
@@ -203,7 +207,7 @@ You can use the quantity modifier to backtrack.
 You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
 To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
 The filter first checks if you inputted a tag listed below, if it gets no match it tries to match your input to one of the display titles and returns the first one found.
-ex: inputting "LVOLR" will set the mode to "Liquid VOL Ratio".
+ex: inputting "LCH4R" will set the mode to "Liquid CH4 Ratio".
 ex: inputting "O2" will set the mode to "O2 Ratio".
 
 This mod also adds logic memory/reader to the list just like the graph console does. This will allow you to add logic memories, logic readers and circuit housings to your linked devices.
