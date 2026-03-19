@@ -2,34 +2,16 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <TargetFramework>net47</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <OutputPath>bin\Debug</OutputPath>
         <ModName>MoreGasDisplayConsoleOptions</ModName>
-        <UserDir>$(HOMEDRIVE)$(HOMEPATH)</UserDir>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <AssemblyName>MoreGasDisplayConsoleOptions</AssemblyName>
         <RootNamespace>MoreGasDisplayConsoleOptions</RootNamespace>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <Prefer32Bit>false</Prefer32Bit>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <Prefer32Bit>false</Prefer32Bit>
-    </PropertyGroup>
-    <Import Project="$(SolutionDir)MoreGasDisplayConsoleOptions.VS.props" />
+    <Import Project="$(ProjectDir)MoreGasDisplayConsoleOptions.VS.props" />
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
             <HintPath>$(StationeersDirectory)\rocketstation_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -62,19 +44,14 @@
           <HintPath>$(StationeersDirectory)\rocketstation_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <ItemGroup>
-        <_CopyItemsGameData Include="$(ProjectDir)\GameData\**\*.*" />
-        <_CopyItemsAbout Include="$(ProjectDir)\About\**\*.*" />
-    </ItemGroup>
-    <Target Name="AfterBuild">
-        <Message Text="### AfterBuild ###" Importance="high" />
-        <Message Text="Copying mod files to mod folder." Importance="high" />
-        <RemoveDir Directories="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" />
-        <Copy SourceFiles="$(ProjectDir)\$(ModName).info" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="false" />
-        <Copy SourceFiles="$(ProjectDir)\bin\Debug\$(ModName).dll" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="true" />
-        <Copy SourceFiles="@(_CopyItemsGameData)" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)\GameData\%(RecursiveDir)" ContinueOnError="true" />
-        <Copy SourceFiles="@(_CopyItemsAbout)" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)\About\%(RecursiveDir)" ContinueOnError="true" />
-        <Copy SourceFiles="$(ProjectDir)\bin\Debug\$(ModName).pdb" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="true" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
-    </Target>
+    <!-- <Target Name="AfterBuild"> -->
+    <!--     <Message Text="### AfterBuild ###" Importance="high" /> -->
+    <!--     <Message Text="Copying mod files to mod folder." Importance="high" /> -->
+    <!--     <RemoveDir Directories="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" /> -->
+    <!--     <Copy SourceFiles="$(ProjectDir)\$(ModName).info" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="false" /> -->
+    <!--     <Copy SourceFiles="$(ProjectDir)\bin\Debug\$(ModName).dll" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="true" /> -->
+    <!--     <Copy SourceFiles="@(_CopyItemsGameData)" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)\GameData\%(RecursiveDir)" ContinueOnError="true" /> -->
+    <!--     <Copy SourceFiles="@(_CopyItemsAbout)" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)\About\%(RecursiveDir)" ContinueOnError="true" /> -->
+    <!--     <Copy SourceFiles="$(ProjectDir)\bin\Debug\$(ModName).pdb" DestinationFolder="$(UserDir)\Documents\My Games\Stationeers\mods\$(ModName)" ContinueOnError="true" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " /> -->
+    <!-- </Target> -->
 </Project>
