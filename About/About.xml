@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>More Gas Display Console Options</Name>
   <Author>Vespinian</Author>
-  <Version>0.1.0000.00013.0</Version>
+  <Version>0.1.0000.00014.0</Version>
   <!-- Steam description using steam styling tags for Steam workshop page -->
   <Description>
     [h1]More Gas Display Console Options[/h1]
@@ -124,6 +124,10 @@
 
   <!-- All contents of ChangeLog should be changed for each publication for Steam workshop page -->
   <ChangeLog>
+    [h3]Version 0.1.0000.00014.0:[/h3]
+    [list]
+    [*]Added new gasses and liquids
+    [/list]
     [h3]Version 0.1.0000.00013.0:[/h3]
     [list]
     [*]Changed VOL to CH4, more gasses to come
