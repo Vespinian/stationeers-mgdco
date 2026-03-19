@@ -26,14 +26,14 @@ namespace MoreGasDisplayConsoleOptions
 			RatioLiquidO2,
 			QuantityLiquidO2,
 			VolumeLiquidO2,
-			// Volatiles
-			RatioVol,
-			QuantityVol,
-			RatioGaseousVol,
-			QuantityGaseousVol,
-			RatioLiquidVol,
-			QuantityLiquidVol,
-			VolumeLiquidVol,
+			// Methane
+			RatioCH4,
+			QuantityCH4,
+			RatioGaseousCH4,
+			QuantityGaseousCH4,
+			RatioLiquidCH4,
+			QuantityLiquidCH4,
+			VolumeLiquidCH4,
 			// Pollutant
 			RatioPol,
 			QuantityPol,
@@ -138,14 +138,14 @@ namespace MoreGasDisplayConsoleOptions
 			{(int)PatchGasDisplayMode.RatioLiquidPol,      ("LPOLR", "LIQUID POL",   "%",    "Mode: <b>Liquid POL (%)</b>",       Chemistry.GasType.LiquidPollutant, PatchDataType.Ratio, false)},
 			{(int)PatchGasDisplayMode.VolumeLiquidPol,     ("LPOLV", "LIQUID POL",   "L",    "Mode: <b>Liquid POL (L)</b>",       Chemistry.GasType.LiquidPollutant, PatchDataType.Volume, false)},
 			{(int)PatchGasDisplayMode.QuantityLiquidPol,   ("LPOLM", "LIQUID POL",   "mol",  "Mode: <b>Liquid POL (mol)</b>",     Chemistry.GasType.LiquidPollutant, PatchDataType.Quantity, false)},
-			// Vol
-			{(int)PatchGasDisplayMode.RatioVol,            ("VOLR", "VOL",           "%",    "Mode: <b>VOL (%)</b>",              Chemistry.GasType.Volatiles, PatchDataType.Ratio, true)},
-			{(int)PatchGasDisplayMode.QuantityVol,         ("VOLM", "VOL",           "mol",  "Mode: <b>VOL (mol)</b>",            Chemistry.GasType.Volatiles, PatchDataType.Quantity, true)},
-			{(int)PatchGasDisplayMode.RatioGaseousVol,     ("GVOLR", "GASEOUS VOL",  "%",    "Mode: <b>Gaseous VOL (%)</b>",      Chemistry.GasType.Volatiles, PatchDataType.Ratio, false)},
-			{(int)PatchGasDisplayMode.QuantityGaseousVol,  ("GVOLM", "GASEOUS VOL",  "mol",  "Mode: <b>Gaseous VOL (mol)</b>",    Chemistry.GasType.Volatiles, PatchDataType.Quantity, false)},
-			{(int)PatchGasDisplayMode.RatioLiquidVol,      ("LVOLR", "LIQUID VOL",   "%",    "Mode: <b>Liquid VOL (%)</b>",       Chemistry.GasType.LiquidVolatiles, PatchDataType.Ratio, false)},
-			{(int)PatchGasDisplayMode.VolumeLiquidVol,     ("LVOLV", "LIQUID VOL",   "L",    "Mode: <b>Liquid VOL (L)</b>",       Chemistry.GasType.LiquidVolatiles, PatchDataType.Volume, false)},
-			{(int)PatchGasDisplayMode.QuantityLiquidVol,   ("LVOLM", "LIQUID VOL",   "mol",  "Mode: <b>Liquid VOL (mol)</b>",     Chemistry.GasType.LiquidVolatiles, PatchDataType.Quantity, false)},
+			// Methane
+			{(int)PatchGasDisplayMode.RatioCH4,            ("CH4R", "CH4",           "%",    "Mode: <b>Methane (CH4) (%)</b>",              Chemistry.GasType.Methane, PatchDataType.Ratio, true)},
+			{(int)PatchGasDisplayMode.QuantityCH4,         ("CH4M", "CH4",           "mol",  "Mode: <b>Methane (CH4) (mol)</b>",            Chemistry.GasType.Methane, PatchDataType.Quantity, true)},
+			{(int)PatchGasDisplayMode.RatioGaseousCH4,     ("GCH4R", "GASEOUS CH4",  "%",    "Mode: <b>Gaseous CH4 (%)</b>",      Chemistry.GasType.Methane, PatchDataType.Ratio, false)},
+			{(int)PatchGasDisplayMode.QuantityGaseousCH4,  ("GCH4M", "GASEOUS CH4",  "mol",  "Mode: <b>Gaseous CH4 (mol)</b>",    Chemistry.GasType.Methane, PatchDataType.Quantity, false)},
+			{(int)PatchGasDisplayMode.RatioLiquidCH4,      ("LCH4R", "LIQUID CH4",   "%",    "Mode: <b>Liquid CH4 (%)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Ratio, false)},
+			{(int)PatchGasDisplayMode.VolumeLiquidCH4,     ("LCH4V", "LIQUID CH4",   "L",    "Mode: <b>Liquid CH4 (L)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Volume, false)},
+			{(int)PatchGasDisplayMode.QuantityLiquidCH4,   ("LCH4M", "LIQUID CH4",   "mol",  "Mode: <b>Liquid CH4 (mol)</b>",     Chemistry.GasType.LiquidMethane, PatchDataType.Quantity, false)},
 			// N2O
 			{(int)PatchGasDisplayMode.RatioN2O,            ("N2OR", "N2O",           "%",    "Mode: <b>N₂O (%)</b>",              Chemistry.GasType.NitrousOxide, PatchDataType.Ratio, true)},
 			{(int)PatchGasDisplayMode.QuantityN2O,         ("N2OM", "N2O",           "mol",  "Mode: <b>N₂O (mol)</b>",            Chemistry.GasType.NitrousOxide, PatchDataType.Quantity, true)},
@@ -208,8 +208,8 @@ namespace MoreGasDisplayConsoleOptions
 				case Chemistry.GasType.Nitrogen:
 					result = atmosphere.GasMixture.Nitrogen.Quantity.ToFloat();
 					break;
-				case Chemistry.GasType.Volatiles:
-					result = atmosphere.GasMixture.Volatiles.Quantity.ToFloat();
+				case Chemistry.GasType.Methane:
+					result = atmosphere.GasMixture.Methane.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Pollutant:
 					result = atmosphere.GasMixture.Pollutant.Quantity.ToFloat();
@@ -229,8 +229,8 @@ namespace MoreGasDisplayConsoleOptions
 				case Chemistry.GasType.LiquidNitrogen:
 					result = atmosphere.GasMixture.LiquidNitrogen.Quantity.ToFloat();
 					break;
-				case Chemistry.GasType.LiquidVolatiles:
-					result = atmosphere.GasMixture.LiquidVolatiles.Quantity.ToFloat();
+				case Chemistry.GasType.LiquidMethane:
+					result = atmosphere.GasMixture.LiquidMethane.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidPollutant:
 					result = atmosphere.GasMixture.LiquidPollutant.Quantity.ToFloat();
@@ -262,8 +262,8 @@ namespace MoreGasDisplayConsoleOptions
 				case Chemistry.GasType.Nitrogen:
 					result += atmosphere.GasMixture.LiquidNitrogen.Quantity.ToFloat();
 					break;
-				case Chemistry.GasType.Volatiles:
-					result += atmosphere.GasMixture.LiquidVolatiles.Quantity.ToFloat();
+				case Chemistry.GasType.Methane:
+					result += atmosphere.GasMixture.LiquidMethane.Quantity.ToFloat();
 					break;
 				case Chemistry.GasType.Pollutant:
 					result += atmosphere.GasMixture.LiquidPollutant.Quantity.ToFloat();
@@ -296,8 +296,8 @@ namespace MoreGasDisplayConsoleOptions
 				case Chemistry.GasType.LiquidNitrogen:
 					result = atmosphere.GasMixture.LiquidNitrogen.Volume.ToFloat();
 					break;
-				case Chemistry.GasType.LiquidVolatiles:
-					result = atmosphere.GasMixture.LiquidVolatiles.Volume.ToFloat();
+				case Chemistry.GasType.LiquidMethane:
+					result = atmosphere.GasMixture.LiquidMethane.Volume.ToFloat();
 					break;
 				case Chemistry.GasType.LiquidPollutant:
 					result = atmosphere.GasMixture.LiquidPollutant.Volume.ToFloat();
