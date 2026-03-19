@@ -15,9 +15,11 @@
     [b]WARNING:[/b] This mod is incompatible with my KelvinConsole mod so make sure you disable/unsubscribe it if you have it installed.
 
     This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
-    There's 63 modes in total so have fun clicking!
+    There's 108 modes in total so have fun clicking!
 
     You can use the quantity modifier to backtrack.
+
+      [b]NOTE:[/b] The vanilla pressure mode is squeezed in between Polluted Water and Helium as I didn't want to break backwards compatibility.
 
     You can also use the filter function of the console to target specific modes or at least get closer to the one you want.
     To use the mod's filter function you will need to hold Left Alt when clicking the confirm button in the filter input menu.
@@ -117,6 +119,49 @@
     [*] "LPH2OM" - Polluted Water Moles
     [*] "LPH2OV" - Polluted Water Volume
     [*] "P"      - Vanilla Pressure
+    [*] "HeR"    - Helium Ratio
+    [*] "HeM"    - Helium Moles
+    [*] "N2H4R"  - Hydrazine Ratio
+    [*] "N2H4M"  - Hydrazine Moles
+    [*] "GN2H4R" - Gaseous Hydrazine Ratio
+    [*] "GN2H4M" - Gaseous Hydrazine Moles
+    [*] "LN2H4R" - Liquid Hydrazine Ratio
+    [*] "LN2H4M" - Liquid Hydrazine Moles
+    [*] "LN2H4V" - Liquid Hydrazine Volume
+    [*] "H2R"    - H2 Ratio
+    [*] "H2M"    - H2 Moles
+    [*] "GHe2R"  - Gaseous H2 Ratio
+    [*] "GHe2M"  - Gaseous H2 Moles
+    [*] "LH2R"   - Liquid H2 Ratio
+    [*] "LH2M"   - Liquid H2 Moles
+    [*] "LH2V"   - Liquid H2 Volume
+    [*] "LAlcR"  - Alcohol Ratio
+    [*] "LAlcM"  - Alcohol Moles
+    [*] "LAlcV"  - Alcohol Volume
+    [*] "O3R"    - O3 Ratio
+    [*] "O3M"    - O3 Moles
+    [*] "GO3R"   - Gaseous O3 Ratio
+    [*] "GO3M"   - Gaseous O3 Moles
+    [*] "LO3R"   - Liquid O3 Ratio
+    [*] "LO3M"   - Liquid O3 Moles
+    [*] "LO3V"   - Liquid O3 Volume
+    [*] "SiH4R"  - Silanol Ratio
+    [*] "SiH4M"  - Silanol Moles
+    [*] "GSiH4R" - Gaseous Silanol Ratio
+    [*] "GSiH4M" - Gaseous Silanol Moles
+    [*] "LSiH4R" - Liquid Silanol Ratio
+    [*] "LSiH4M" - Liquid Silanol Moles
+    [*] "LSiH4V" - Liquid Silanol Volume
+    [*] "NaClR"  - Salt Ratio
+    [*] "NaClM"  - Salt Moles
+    [*] "NaClV"  - Salt Volume
+    [*] "HClR"   - HCl Ratio
+    [*] "HClM"   - HCl Moles
+    [*] "GHClR"  - Gaseous HCl Ratio
+    [*] "GHClM"  - Gaseous HCl Moles
+    [*] "LHClR"  - Liquid HCl Ratio
+    [*] "LHClM"  - Liquid HCl Moles
+    [*] "LHClV"  - Liquid HCl Volume
     [/olist]
 
   </Description>
@@ -126,7 +171,7 @@
   <ChangeLog>
     [h3]Version 0.1.0000.00014.0:[/h3]
     [list]
-    [*]Added new gasses and liquids
+    [*]Added new gasses and liquids from the Gases Update
     [/list]
     [h3]Version 0.1.0000.00013.0:[/h3]
     [list]
@@ -204,7 +249,7 @@ If you are having errors after updating you can try to load your save without th
 Your setting will probably get wipe though.
 
 This mod adds a bunch of modes to the gas display consoles which covers pretty much everything the atmospheric analyzer from the tablet gives you.
-There's 63 modes in total so have fun clicking!
+There's 108 modes in total so have fun clicking!
 
 You can use the quantity modifier to backtrack.
 
@@ -259,6 +304,9 @@ List of modes:
     * Liquid moles
     * Liquid mole ratio
     * Liquid volume
-]]>
+  New gases added in The Gases Update (Helium, Hydrazine, Hydrogen, Alcohol, Ozone, Silanol, Salt, Hydrochloric Acid) follow the same gas/liquid combo pattern.
+  Gases without a liquid form (Helium) only have gas modes.
+  Liquids without a gas form (Alcohol, Salt) only have liquid modes.
+]>
   </InGameDescription>
 </ModMetadata>
