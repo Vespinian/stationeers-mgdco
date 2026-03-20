@@ -21,7 +21,7 @@ namespace MoreGasDisplayConsoleOptions
         public class GasDisplayExtender
         {
             public List<ISetable> SetableDevices = new List<ISetable>();
-            public int page = 0;
+            public int page = (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure;
         }
     }
 
@@ -31,6 +31,7 @@ namespace MoreGasDisplayConsoleOptions
     {
         static void Postfix(GasDisplay __instance)
         {
+            __instance.Flag = MGDCOPatchHelper.fixEnumOrdering(__instance.Flag);
             GasDisplayExtenderDict.gasDisplayDict.Add(__instance, new GasDisplayExtenderDict.GasDisplayExtender());
             GasDisplayExtenderDict.gasDisplayDict[__instance].page = __instance.Flag;
         }
@@ -107,12 +108,12 @@ namespace MoreGasDisplayConsoleOptions
                 __instance.Flag++;
             }
 
-            if (__instance.Flag == (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
+            if (__instance.Flag >= (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
             {
-                __instance.Flag = 0;
+                __instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure;
 
             }
-            else if (__instance.Flag < 0)
+            else if (__instance.Flag < (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
             {
                 __instance.Flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - 1;
             }
@@ -136,8 +137,8 @@ namespace MoreGasDisplayConsoleOptions
                 int index = 0;
                 if (int.TryParse(tag, out index))
                 {
-                    if (index >= 1 && index <= (int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays)
-                        __instance.SetFlag(index - 1);
+                    if (index >= 1 && index <= ((int)MGDCOPatchHelper.PatchGasDisplayMode.TotalDisplays - (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure))
+                        __instance.SetFlag(index + (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure - 1);
                     return false;
                 }
                 else
@@ -175,6 +176,7 @@ namespace MoreGasDisplayConsoleOptions
     {
         private static bool Prefix(int page, GasDisplay __instance, ref int ____lastUnitIndex)
         {
+            page = MGDCOPatchHelper.fixEnumOrdering(page);
             __instance.Flag = page;
             __instance.DisplayMode = GasDisplayMode.Temperature;
             if (GasDisplayExtenderDict.gasDisplayDict.ContainsKey(__instance))

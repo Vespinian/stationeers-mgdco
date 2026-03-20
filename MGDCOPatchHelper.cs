@@ -8,7 +8,10 @@ namespace MoreGasDisplayConsoleOptions
     {
         public enum PatchGasDisplayMode
         {
-            PrecisePressure = 0,
+            Debug = 0, // Having a 0 value in the Dict is important to avoid errors on game load.
+            // pre 1.14 version had enum values up to 63 so skipped to 100 for a clean slate
+            Pressure = 100, // Vanilla behavior for Pressure
+            PrecisePressure,
             Temperature,
             TemperatureKelvin,
             EnergyConvected,
@@ -77,8 +80,6 @@ namespace MoreGasDisplayConsoleOptions
             RatioPollutedH2O,
             QuantityPollutedH2O,
             VolumePollutedH2O,
-            // Vanilla behavior
-            Pressure,
             // Helium
             RatioHe,
             QuantityHe,
@@ -143,9 +144,26 @@ namespace MoreGasDisplayConsoleOptions
             Energy
         }
 
-        // DisplayTitle , DisplayUnits, ToggleModeButtonText, Gas type, Patch Type, Combine liquid and gas for ratio and quantity data types
+        // Changed enum ordering in 1.14 to have pressure at 100 as the first element
+        // because the new gasses squeezed it in an akward place.
+        // This function to to make the transition seemless
+        public static int fixEnumOrdering(int flag)
+        {
+            if (flag == 62) // old Enum value of Pressure
+            {
+                flag = (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure;
+            }
+            else if (flag < (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure)
+            {
+                flag += (int)MGDCOPatchHelper.PatchGasDisplayMode.Pressure + 1;
+            }
+            return flag;
+        }
+
+        // Tag, DisplayTitle , DisplayUnits, ToggleModeButtonText, Gas type, Patch Type, Combine liquid and gas for ratio and quantity data types
         public static readonly Dictionary<int, (string tag, string displayName, string unit, string displayModeButton, Chemistry.GasType? gasType, PatchDataType dataType, bool combined)> GasData
             = new Dictionary<int, (string, string, string, string, Chemistry.GasType?, PatchDataType, bool)> {
+            {(int)PatchGasDisplayMode.Debug,            ("DEBUG", "DEBUG",       "dbg",  "Mode: <b>Debug</b>", null, PatchDataType.Pressure, false)},
             {(int)PatchGasDisplayMode.Pressure,            ("P", "PRESSURE",       "Pa",  "Mode: <b>Pressure</b>", null, PatchDataType.Pressure, false)},
             {(int)PatchGasDisplayMode.PrecisePressure,     ("PP", "PRESSURE",      "Pa",  "Mode: <b>Precise Pressure</b>",    null, PatchDataType.Pressure, false)},
             {(int)PatchGasDisplayMode.Temperature,         ("TC", "TEMPERATURE",   "°C",  "Mode: <b>Temperature (°C)</b>",    null, PatchDataType.Temperature, false)},
@@ -190,13 +208,13 @@ namespace MoreGasDisplayConsoleOptions
             {(int)PatchGasDisplayMode.VolumeLiquidPol,     ("LPOLV", "LIQUID POL",   "L",    "Mode: <b>Liquid POL (L)</b>",       Chemistry.GasType.LiquidPollutant, PatchDataType.Volume, false)},
             {(int)PatchGasDisplayMode.QuantityLiquidPol,   ("LPOLM", "LIQUID POL",   "mol",  "Mode: <b>Liquid POL (mol)</b>",     Chemistry.GasType.LiquidPollutant, PatchDataType.Quantity, false)},
             // Methane
-            {(int)PatchGasDisplayMode.RatioCH4,            ("CH4R", "CH4",           "%",    "Mode: <b>Methane (CH4) (%)</b>",              Chemistry.GasType.Methane, PatchDataType.Ratio, true)},
-            {(int)PatchGasDisplayMode.QuantityCH4,         ("CH4M", "CH4",           "mol",  "Mode: <b>Methane (CH4) (mol)</b>",            Chemistry.GasType.Methane, PatchDataType.Quantity, true)},
-            {(int)PatchGasDisplayMode.RatioGaseousCH4,     ("GCH4R", "GASEOUS CH4",  "%",    "Mode: <b>Gaseous CH4 (%)</b>",      Chemistry.GasType.Methane, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.QuantityGaseousCH4,  ("GCH4M", "GASEOUS CH4",  "mol",  "Mode: <b>Gaseous CH4 (mol)</b>",    Chemistry.GasType.Methane, PatchDataType.Quantity, false)},
-            {(int)PatchGasDisplayMode.RatioLiquidCH4,      ("LCH4R", "LIQUID CH4",   "%",    "Mode: <b>Liquid CH4 (%)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.VolumeLiquidCH4,     ("LCH4V", "LIQUID CH4",   "L",    "Mode: <b>Liquid CH4 (L)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Volume, false)},
-            {(int)PatchGasDisplayMode.QuantityLiquidCH4,   ("LCH4M", "LIQUID CH4",   "mol",  "Mode: <b>Liquid CH4 (mol)</b>",     Chemistry.GasType.LiquidMethane, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioCH4,            ("CH4R", "CH4",           "%",    "Mode: <b>Methane (CH₄) (%)</b>",              Chemistry.GasType.Methane, PatchDataType.Ratio, true)},
+            {(int)PatchGasDisplayMode.QuantityCH4,         ("CH4M", "CH4",           "mol",  "Mode: <b>Methane (CH₄) (mol)</b>",            Chemistry.GasType.Methane, PatchDataType.Quantity, true)},
+            {(int)PatchGasDisplayMode.RatioGaseousCH4,     ("GCH4R", "GASEOUS CH4",  "%",    "Mode: <b>Gaseous CH₄ (%)</b>",      Chemistry.GasType.Methane, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.QuantityGaseousCH4,  ("GCH4M", "GASEOUS CH4",  "mol",  "Mode: <b>Gaseous CH₄ (mol)</b>",    Chemistry.GasType.Methane, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioLiquidCH4,      ("LCH4R", "LIQUID CH4",   "%",    "Mode: <b>Liquid CH₄ (%)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.VolumeLiquidCH4,     ("LCH4V", "LIQUID CH4",   "L",    "Mode: <b>Liquid CH₄ (L)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Volume, false)},
+            {(int)PatchGasDisplayMode.QuantityLiquidCH4,   ("LCH4M", "LIQUID CH4",   "mol",  "Mode: <b>Liquid CH₄ (mol)</b>",     Chemistry.GasType.LiquidMethane, PatchDataType.Quantity, false)},
             // N2O
             {(int)PatchGasDisplayMode.RatioN2O,            ("N2OR", "N2O",           "%",    "Mode: <b>N₂O (%)</b>",              Chemistry.GasType.NitrousOxide, PatchDataType.Ratio, true)},
             {(int)PatchGasDisplayMode.QuantityN2O,         ("N2OM", "N2O",           "mol",  "Mode: <b>N₂O (mol)</b>",            Chemistry.GasType.NitrousOxide, PatchDataType.Quantity, true)},
@@ -220,13 +238,13 @@ namespace MoreGasDisplayConsoleOptions
             {(int)PatchGasDisplayMode.RatioHe,             ("HeR", "HE",           "%",    "Mode: <b>He (%)</b>",              Chemistry.GasType.Helium, PatchDataType.Ratio, true)},
             {(int)PatchGasDisplayMode.QuantityHe,          ("HeM", "HE",           "mol",  "Mode: <b>He (mol)</b>",            Chemistry.GasType.Helium, PatchDataType.Quantity, true)},
             // Hydrazine
-            {(int)PatchGasDisplayMode.RatioHydrazine,      ("N2H4R", "HYDRAZINE",     "%",    "Mode: <b>Hydrazine (%)</b>",           Chemistry.GasType.Hydrazine, PatchDataType.Ratio, true)},
-            {(int)PatchGasDisplayMode.QuantityHydrazine,   ("N2H4M", "HYDRAZINE",     "mol",  "Mode: <b>Hydrazine (mol)</b>",         Chemistry.GasType.Hydrazine, PatchDataType.Quantity, true)},
-            {(int)PatchGasDisplayMode.RatioGaseousHydrazine, ("GN2H4R", "GASEOUS HYDRAZINE",  "%",    "Mode: <b>Gaseous Hydrazine (%)</b>",   Chemistry.GasType.Hydrazine, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.QuantityGaseousHydrazine, ("GN2H4M", "GASEOUS HYDRAZINE",  "mol",  "Mode: <b>Gaseous Hydrazine (mol)</b>", Chemistry.GasType.Hydrazine, PatchDataType.Quantity, false)},
-            {(int)PatchGasDisplayMode.RatioLiquidHydrazine, ("LN2H4R", "LIQUID HYDRAZINE",   "%",    "Mode: <b>Liquid Hydrazine (%)</b>",    Chemistry.GasType.LiquidHydrazine, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.VolumeLiquidHydrazine, ("LN2H4V", "LIQUID HYDRAZINE",   "L",    "Mode: <b>Liquid Hydrazine (L)</b>",    Chemistry.GasType.LiquidHydrazine, PatchDataType.Volume, false)},
-            {(int)PatchGasDisplayMode.QuantityLiquidHydrazine, ("LN2H4M", "LIQUID HYDRAZINE",   "mol",  "Mode: <b>Liquid Hydrazine (mol)</b>",  Chemistry.GasType.LiquidHydrazine, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioHydrazine,      ("N2H4R", "N2H4",     "%",    "Mode: <b>N₂H₄ (%)</b>",           Chemistry.GasType.Hydrazine, PatchDataType.Ratio, true)},
+            {(int)PatchGasDisplayMode.QuantityHydrazine,   ("N2H4M", "N2H4",     "mol",  "Mode: <b>N₂H₄ (mol)</b>",         Chemistry.GasType.Hydrazine, PatchDataType.Quantity, true)},
+            {(int)PatchGasDisplayMode.RatioGaseousHydrazine, ("GN2H4R", "GASEOUS N2H4",  "%",    "Mode: <b>Gaseous N₂H₄ (%)</b>",   Chemistry.GasType.Hydrazine, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.QuantityGaseousHydrazine, ("GN2H4M", "GASEOUS N2H4",  "mol",  "Mode: <b>Gaseous N₂H₄ (mol)</b>", Chemistry.GasType.Hydrazine, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioLiquidHydrazine, ("LN2H4R", "LIQUID N2H4",   "%",    "Mode: <b>Liquid N₂H₄ (%)</b>",    Chemistry.GasType.LiquidHydrazine, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.VolumeLiquidHydrazine, ("LN2H4V", "LIQUID N2H4",   "L",    "Mode: <b>Liquid N₂H₄ (L)</b>",    Chemistry.GasType.LiquidHydrazine, PatchDataType.Volume, false)},
+            {(int)PatchGasDisplayMode.QuantityLiquidHydrazine, ("LN2H4M", "LIQUID N2H4",   "mol",  "Mode: <b>Liquid N₂H₄ (mol)</b>",  Chemistry.GasType.LiquidHydrazine, PatchDataType.Quantity, false)},
             // Hydrogen
             {(int)PatchGasDisplayMode.RatioH2,             ("H2R", "H2",           "%",    "Mode: <b>H₂ (%)</b>",               Chemistry.GasType.Hydrogen, PatchDataType.Ratio, true)},
             {(int)PatchGasDisplayMode.QuantityH2,          ("H2M", "H2",           "mol",  "Mode: <b>H₂ (mol)</b>",             Chemistry.GasType.Hydrogen, PatchDataType.Quantity, true)},
@@ -248,25 +266,25 @@ namespace MoreGasDisplayConsoleOptions
             {(int)PatchGasDisplayMode.VolumeLiquidO3,     ("LO3V", "LIQUID O3",   "L",    "Mode: <b>Liquid O₃ (L)</b>",        Chemistry.GasType.LiquidOzone, PatchDataType.Volume, false)},
             {(int)PatchGasDisplayMode.QuantityLiquidO3,    ("LO3M", "LIQUID O3",   "mol",  "Mode: <b>Liquid O₃ (mol)</b>",      Chemistry.GasType.LiquidOzone, PatchDataType.Quantity, false)},
             // Silanol
-            {(int)PatchGasDisplayMode.RatioSiH4,          ("SiH4R", "SILANOL",           "%",    "Mode: <b>Silanol (%)</b>",              Chemistry.GasType.Silanol, PatchDataType.Ratio, true)},
-            {(int)PatchGasDisplayMode.QuantitySiH4,       ("SiH4M", "SILANOL",           "mol",  "Mode: <b>Silanol (mol)</b>",            Chemistry.GasType.Silanol, PatchDataType.Quantity, true)},
-            {(int)PatchGasDisplayMode.RatioGaseousSiH4,  ("GSiH4R", "GASEOUS SILANOL",  "%",    "Mode: <b>Gaseous Silanol (%)</b>",      Chemistry.GasType.Silanol, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.QuantityGaseousSiH4, ("GSiH4M", "GASEOUS SILANOL",  "mol",  "Mode: <b>Gaseous Silanol (mol)</b>",    Chemistry.GasType.Silanol, PatchDataType.Quantity, false)},
-            {(int)PatchGasDisplayMode.RatioLiquidSiH4,   ("LSiH4R", "LIQUID SILANOL",   "%",    "Mode: <b>Liquid Silanol (%)</b>",       Chemistry.GasType.LiquidSilanol, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.VolumeLiquidSiH4,  ("LSiH4V", "LIQUID SILANOL",   "L",    "Mode: <b>Liquid Silanol (L)</b>",       Chemistry.GasType.LiquidSilanol, PatchDataType.Volume, false)},
-            {(int)PatchGasDisplayMode.QuantityLiquidSiH4, ("LSiH4M", "LIQUID SILANOL",   "mol",  "Mode: <b>Liquid Silanol (mol)</b>",     Chemistry.GasType.LiquidSilanol, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioSiH4,          ("SIH4R", "SIL",           "%",    "Mode: <b>Sil (%)</b>",              Chemistry.GasType.Silanol, PatchDataType.Ratio, true)},
+            {(int)PatchGasDisplayMode.QuantitySiH4,       ("SIH4M", "SIL",           "mol",  "Mode: <b>Sil (mol)</b>",            Chemistry.GasType.Silanol, PatchDataType.Quantity, true)},
+            {(int)PatchGasDisplayMode.RatioGaseousSiH4,  ("GSIH4R", "GASEOUS SIL",  "%",    "Mode: <b>Gaseous Sil (%)</b>",      Chemistry.GasType.Silanol, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.QuantityGaseousSiH4, ("GSIH4M", "GASEOUS SIL",  "mol",  "Mode: <b>Gaseous Sil (mol)</b>",    Chemistry.GasType.Silanol, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioLiquidSiH4,   ("LSIH4R", "LIQUID SIL",   "%",    "Mode: <b>Liquid Sil (%)</b>",       Chemistry.GasType.LiquidSilanol, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.VolumeLiquidSiH4,  ("LSIH4V", "LIQUID SIL",   "L",    "Mode: <b>Liquid Sil (L)</b>",       Chemistry.GasType.LiquidSilanol, PatchDataType.Volume, false)},
+            {(int)PatchGasDisplayMode.QuantityLiquidSiH4, ("LSIH4M", "LIQUID SIL",   "mol",  "Mode: <b>Liquid Sil (mol)</b>",     Chemistry.GasType.LiquidSilanol, PatchDataType.Quantity, false)},
             // Sodium Chloride
-            {(int)PatchGasDisplayMode.RatioNaCl,          ("NaClR", "NACL",           "%",    "Mode: <b>Sodium Chloride (%)</b>",               Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.VolumeNaCl,         ("NaClV", "NACL",           "L",    "Mode: <b>Sodium Chloride (L)</b>",               Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Volume, false)},
-            {(int)PatchGasDisplayMode.QuantityNaCl,       ("NaClM", "NACL",           "mol",  "Mode: <b>Sodium Chloride (mol)</b>",             Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioNaCl,          ("NAClR", "NACL",           "%",    "Mode: <b>NaCl (%)</b>",               Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.VolumeNaCl,         ("NAClV", "NACL",           "L",    "Mode: <b>NaCl (L)</b>",               Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Volume, false)},
+            {(int)PatchGasDisplayMode.QuantityNaCl,       ("NAClM", "NACL",           "mol",  "Mode: <b>NaCl (mol)</b>",             Chemistry.GasType.LiquidSodiumChloride, PatchDataType.Quantity, false)},
             // Hydrochloric Acid
-            {(int)PatchGasDisplayMode.RatioHCl,          ("HClR", "HCL",           "%",    "Mode: <b>HCl (%)</b>",               Chemistry.GasType.HydrochloricAcid, PatchDataType.Ratio, true)},
-            {(int)PatchGasDisplayMode.QuantityHCl,       ("HClM", "HCL",           "mol",  "Mode: <b>HCl (mol)</b>",             Chemistry.GasType.HydrochloricAcid, PatchDataType.Quantity, true)},
-            {(int)PatchGasDisplayMode.RatioGaseousHCl,  ("GHClR", "GASEOUS HCL",  "%",    "Mode: <b>Gaseous HCl (%)</b>",       Chemistry.GasType.HydrochloricAcid, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.QuantityGaseousHCl, ("GHClM", "GASEOUS HCL",  "mol",  "Mode: <b>Gaseous HCl (mol)</b>",     Chemistry.GasType.HydrochloricAcid, PatchDataType.Quantity, false)},
-            {(int)PatchGasDisplayMode.RatioLiquidHCl,   ("LHClR", "LIQUID HCL",   "%",    "Mode: <b>Liquid HCl (%)</b>",        Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Ratio, false)},
-            {(int)PatchGasDisplayMode.VolumeLiquidHCl,  ("LHClV", "LIQUID HCL",   "L",    "Mode: <b>Liquid HCl (L)</b>",        Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Volume, false)},
-            {(int)PatchGasDisplayMode.QuantityLiquidHCl, ("LHClM", "LIQUID HCL",   "mol",  "Mode: <b>Liquid HCl (mol)</b>",      Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioHCl,          ("HCLR", "HCL",           "%",    "Mode: <b>HCl (%)</b>",               Chemistry.GasType.HydrochloricAcid, PatchDataType.Ratio, true)},
+            {(int)PatchGasDisplayMode.QuantityHCl,       ("HCLM", "HCL",           "mol",  "Mode: <b>HCl (mol)</b>",             Chemistry.GasType.HydrochloricAcid, PatchDataType.Quantity, true)},
+            {(int)PatchGasDisplayMode.RatioGaseousHCl,  ("GHCLR", "GASEOUS HCL",  "%",    "Mode: <b>Gaseous HCl (%)</b>",       Chemistry.GasType.HydrochloricAcid, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.QuantityGaseousHCl, ("GHCLM", "GASEOUS HCL",  "mol",  "Mode: <b>Gaseous HCl (mol)</b>",     Chemistry.GasType.HydrochloricAcid, PatchDataType.Quantity, false)},
+            {(int)PatchGasDisplayMode.RatioLiquidHCl,   ("LHCLR", "LIQUID HCL",   "%",    "Mode: <b>Liquid HCl (%)</b>",        Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Ratio, false)},
+            {(int)PatchGasDisplayMode.VolumeLiquidHCl,  ("LHCLV", "LIQUID HCL",   "L",    "Mode: <b>Liquid HCl (L)</b>",        Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Volume, false)},
+            {(int)PatchGasDisplayMode.QuantityLiquidHCl, ("LHCLM", "LIQUID HCL",   "mol",  "Mode: <b>Liquid HCl (mol)</b>",      Chemistry.GasType.LiquidHydrochloricAcid, PatchDataType.Quantity, false)},
             };
 
         public static string getGasDisplayModeTitle(int index)
