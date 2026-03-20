@@ -208,8 +208,8 @@ namespace MoreGasDisplayConsoleOptions
             {(int)PatchGasDisplayMode.VolumeLiquidPol,     ("LPOLV", "LIQUID POL",   "L",    "Mode: <b>Liquid POL (L)</b>",       Chemistry.GasType.LiquidPollutant, PatchDataType.Volume, false)},
             {(int)PatchGasDisplayMode.QuantityLiquidPol,   ("LPOLM", "LIQUID POL",   "mol",  "Mode: <b>Liquid POL (mol)</b>",     Chemistry.GasType.LiquidPollutant, PatchDataType.Quantity, false)},
             // Methane
-            {(int)PatchGasDisplayMode.RatioCH4,            ("CH4R", "CH4",           "%",    "Mode: <b>Methane (CH₄) (%)</b>",              Chemistry.GasType.Methane, PatchDataType.Ratio, true)},
-            {(int)PatchGasDisplayMode.QuantityCH4,         ("CH4M", "CH4",           "mol",  "Mode: <b>Methane (CH₄) (mol)</b>",            Chemistry.GasType.Methane, PatchDataType.Quantity, true)},
+            {(int)PatchGasDisplayMode.RatioCH4,            ("CH4R", "CH4",           "%",    "Mode: <b>CH₄ (%)</b>",              Chemistry.GasType.Methane, PatchDataType.Ratio, true)},
+            {(int)PatchGasDisplayMode.QuantityCH4,         ("CH4M", "CH4",           "mol",  "Mode: <b>CH₄ (mol)</b>",            Chemistry.GasType.Methane, PatchDataType.Quantity, true)},
             {(int)PatchGasDisplayMode.RatioGaseousCH4,     ("GCH4R", "GASEOUS CH4",  "%",    "Mode: <b>Gaseous CH₄ (%)</b>",      Chemistry.GasType.Methane, PatchDataType.Ratio, false)},
             {(int)PatchGasDisplayMode.QuantityGaseousCH4,  ("GCH4M", "GASEOUS CH4",  "mol",  "Mode: <b>Gaseous CH₄ (mol)</b>",    Chemistry.GasType.Methane, PatchDataType.Quantity, false)},
             {(int)PatchGasDisplayMode.RatioLiquidCH4,      ("LCH4R", "LIQUID CH4",   "%",    "Mode: <b>Liquid CH₄ (%)</b>",       Chemistry.GasType.LiquidMethane, PatchDataType.Ratio, false)},
